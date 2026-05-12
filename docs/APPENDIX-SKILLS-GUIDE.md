@@ -104,6 +104,8 @@ PR = что получилось
     │   └── SKILL.md
     ├── orchestration-plan/
     │   └── SKILL.md
+    ├── refactoring-plan/
+    │   └── SKILL.md
     ├── implementation-plan/
     │   └── SKILL.md
     ├── test-gap-review/
@@ -288,6 +290,7 @@ capability-router
 → requirement-slicing
 → issue-agent-readiness
 → orchestration-plan
+→ refactoring-plan, если нужен behavior-preserving refactor
 → implementation-plan
 → test-gap-review
 → security-review, если есть риск
@@ -867,6 +870,47 @@ Subagents подходят для параллельного анализа, н�
 
 ---
 
+## 7.5.1. `refactoring-plan`
+
+### Когда использовать
+
+```text
+- перед behavior-preserving refactor;
+- duplicate logic встречается в 3+ местах;
+- функция или модуль блокирует безопасное изменение или тестирование;
+- поведение нельзя протестировать без extraction или isolation;
+- ответственность модуля размыта;
+- повторяется один и тот же bug pattern;
+- файл high-churn и fragile;
+- legacy naming конфликтует с terminology map.
+```
+
+### Выход
+
+```text
+status: approved-in-scope | needs-separate-issue | blocked | fold-into-current-task
+refactor trigger
+behavior invariants
+allowed changes
+forbidden changes
+tests or characterization
+validation commands
+rollback notes
+recommendation
+```
+
+### Не использовать
+
+```text
+для cosmetic cleanup only;
+для broad refactor внутри feature/bug issue;
+для behavior changes без отдельного issue или explicit approval;
+если нет tests или characterization path;
+для unrelated formatting churn.
+```
+
+---
+
 ## 7.6. `implementation-plan`
 
 ### Когда использовать
@@ -1100,8 +1144,9 @@ MCP не должен обходить GitHub Issue, PR, CI, branch protection �
 | Backlog | requirement-slicing | issue-agent-readiness, orchestration-plan |
 | GitHub planning layer | issue-agent-readiness | requirement-slicing, mcp-usage-guard |
 | Triage issue | issue-agent-readiness | terminology-map-builder |
-| Планирование задачи | orchestration-plan | implementation-plan, mcp-usage-guard |
-| Реализация | implementation-plan | pr-handoff |
+| Планирование задачи | orchestration-plan | refactoring-plan, implementation-plan, mcp-usage-guard |
+| Refactoring | refactoring-plan | implementation-plan, test-gap-review |
+| Реализация | implementation-plan | refactoring-plan, pr-handoff |
 | Review тестов | test-gap-review | issue-agent-readiness |
 | Security review | security-review | mcp-usage-guard |
 | Docs update | documentation-sync | terminology-map-builder |
@@ -1118,9 +1163,9 @@ MCP не должен обходить GitHub Issue, PR, CI, branch protection �
 | Delivery Planner / Backlog Architect | requirement-slicing, issue-agent-readiness | capability-router, orchestration-plan, mcp-usage-guard |
 | Terminology / Analyst Agent | source-index-builder, terminology-map-builder | requirement-slicing, documentation-sync |
 | PM / Scope Agent | requirement-slicing, issue-agent-readiness | orchestration-plan |
-| Architect Agent | implementation-plan, documentation-sync | security-review |
-| Implementer Agent | implementation-plan | pr-handoff |
-| QA Reviewer Agent | test-gap-review | pr-handoff |
+| Architect Agent | refactoring-plan, implementation-plan, documentation-sync | security-review |
+| Implementer Agent | refactoring-plan, implementation-plan | pr-handoff |
+| QA Reviewer Agent | test-gap-review | refactoring-plan, pr-handoff |
 | Security Reviewer Agent | security-review, mcp-usage-guard | test-gap-review |
 | Docs Agent | documentation-sync, terminology-map-builder | pr-handoff |
 

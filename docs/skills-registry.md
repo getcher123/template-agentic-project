@@ -25,6 +25,7 @@ Task or issue
 → requirement-slicing, for backlog decomposition
 → issue-agent-readiness, for issue and Project readiness
 → orchestration-plan
+→ refactoring-plan, when behavior-preserving refactor is proposed
 → implementation-plan
 → implementation
 → test-gap-review
@@ -44,6 +45,7 @@ Task or issue
 | requirement-slicing | turning brief/processes into GitHub Issues and backlog slices | epics, features, issue drafts, dependencies |
 | issue-agent-readiness | before assigning work to Codex or marking Project items ready | readiness decision, missing info, recommended labels/status |
 | orchestration-plan | task needs multiple roles, skills, or risk review | role plan, skill plan, write-owner, execution sequence |
+| refactoring-plan | before behavior-preserving refactoring | refactor status, trigger, invariants, allowed/forbidden changes, tests, validation, rollback notes |
 | implementation-plan | before code changes | files likely to change, steps, tests, validation |
 | test-gap-review | before PR readiness | missing tests, edge cases, validation gaps |
 | security-review | auth, billing, DB, infra, CI, dependency, secret, data exposure risks | security findings and escalation decision |
@@ -70,6 +72,10 @@ Use $orchestration-plan and $mcp-usage-guard. Decide if GitHub MCP is needed for
 ```
 
 ```text
+Use $refactoring-plan before refactoring the parser module. Decide whether it is approved-in-scope or needs a separate issue.
+```
+
+```text
 Use $test-gap-review on the current diff. Do not modify files.
 ```
 
@@ -86,7 +92,7 @@ Do not create a new skill until the workflow has repeated at least three times a
 | Group | Skills |
 |---|---|
 | Routing and orchestration | capability-router, codex-cli-orchestration |
-| Core delivery | issue-agent-readiness, implementation-plan, pr-handoff |
+| Core delivery | issue-agent-readiness, refactoring-plan, implementation-plan, pr-handoff |
 | Project setup | source-index-builder, terminology-map-builder, requirement-slicing, documentation-sync |
 | Backlog and GitHub planning | requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
 | Review and risk | orchestration-plan, test-gap-review, security-review, mcp-usage-guard |

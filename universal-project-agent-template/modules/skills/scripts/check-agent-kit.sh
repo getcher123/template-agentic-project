@@ -12,6 +12,7 @@ required_paths=(
   ".agents/skills/requirement-slicing/SKILL.md"
   ".agents/skills/issue-agent-readiness/SKILL.md"
   ".agents/skills/orchestration-plan/SKILL.md"
+  ".agents/skills/refactoring-plan/SKILL.md"
   ".agents/skills/implementation-plan/SKILL.md"
   ".agents/skills/test-gap-review/SKILL.md"
   ".agents/skills/security-review/SKILL.md"

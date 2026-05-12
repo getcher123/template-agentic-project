@@ -27,7 +27,7 @@ No other MCP belongs in the starter set. Browser/Playwright can be considered la
 | GitHub planning layer | Delivery Planner / Backlog Architect, Lead / Orchestrator | capability-router, issue-agent-readiness, mcp-usage-guard, orchestration-plan | GitHub MCP for Issues, Projects, labels, Actions context |
 | Feature implementation | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | Context7 MCP if current framework docs are needed |
 | Bugfix | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | GitHub MCP if linked issue/PR context is needed |
-| Refactor | Lead / Orchestrator, Implementer, Reviewer | capability-router, orchestration-plan, implementation-plan, test-gap-review, pr-handoff | none by default |
+| Refactor | Lead / Orchestrator, Implementer, Reviewer | capability-router, orchestration-plan, refactoring-plan, implementation-plan, test-gap-review, pr-handoff | none by default |
 | PR review | Reviewer, Tester / QA | capability-router, test-gap-review, pr-handoff | GitHub MCP if PR metadata or CI status is needed |
 | Security-sensitive task | Lead / Orchestrator, Security Reviewer, Reviewer | capability-router, security-review, mcp-usage-guard, test-gap-review | GitHub MCP read-only if security context is in PR/Actions |
 | Documentation change | Docs / Terminology, Reviewer | capability-router, documentation-sync, terminology-map-builder | none by default |

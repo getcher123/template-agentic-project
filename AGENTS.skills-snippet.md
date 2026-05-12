@@ -13,6 +13,7 @@ Before starting non-trivial work, decide which skills apply:
 - `requirement-slicing` for turning brief/processes into epics, features, and agent-ready issues.
 - `issue-agent-readiness` before delegating an issue to Codex implementation.
 - `orchestration-plan` for multi-role or medium/high-risk tasks.
+- `refactoring-plan` before behavior-preserving refactoring, to prevent scope creep.
 - `implementation-plan` before editing code.
 - `test-gap-review` before marking a PR ready.
 - `security-review` for auth, billing, DB, infra, CI, dependency, or secret-related changes.
@@ -39,8 +40,8 @@ Rules:
 |---|---|
 | Lead / Orchestrator | capability-router, codex-cli-orchestration, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
 | Delivery Planner / Backlog Architect | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
-| Implementer | implementation-plan, pr-handoff |
-| Reviewer | capability-router, test-gap-review, pr-handoff |
+| Implementer | refactoring-plan, implementation-plan, pr-handoff |
+| Reviewer | capability-router, refactoring-plan, test-gap-review, pr-handoff |
 | Tester / QA | capability-router, issue-agent-readiness, test-gap-review |
 | Security Reviewer | capability-router, security-review, mcp-usage-guard |
 | Docs / Terminology | capability-router, source-index-builder, terminology-map-builder, documentation-sync |

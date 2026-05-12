@@ -23,5 +23,12 @@
 | GitHub planning layer | Delivery Planner / Backlog Architect, Lead / Orchestrator | capability-router, issue-agent-readiness, mcp-usage-guard, orchestration-plan | GitHub MCP для Issues, Projects, labels, Actions |
 | Feature | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | Context7 при необходимости |
 | Bugfix | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | GitHub MCP при необходимости |
+| Refactor | Lead / Orchestrator, Implementer, Reviewer | capability-router, orchestration-plan, refactoring-plan, implementation-plan, test-gap-review, pr-handoff | none by default |
 | Review | Reviewer, Tester / QA | capability-router, test-gap-review, pr-handoff | GitHub MCP для PR/CI |
 | Security-sensitive | Lead / Orchestrator, Security Reviewer, Reviewer | capability-router, security-review, mcp-usage-guard, test-gap-review | GitHub MCP read-only при необходимости |
+
+## Refactoring Gate
+
+Используй `refactoring-plan` до изменения кода, если есть повтор logic в 3+ местах, модуль мешает тестированию, нужно extraction/isolation для тестов, границы ответственности размыты, повторяется bug pattern, файл fragile/high-churn или naming конфликтует с terminology map.
+
+Не одобряй refactor только ради cosmetic cleanup, broad cleanup внутри feature/bug issue, public API/schema/migration/auth/infra/security changes без explicit approval, без tests/characterization path или ради unrelated formatting churn.

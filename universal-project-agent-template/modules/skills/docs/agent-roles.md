@@ -14,8 +14,8 @@ The goal is maximum process autonomy with a clear human decision point.
 |---|---|---:|---|
 | Lead / Orchestrator | classify task, choose roles/skills/MCP, launch bounded CLI subagents, plan execution | no by default | capability-router, codex-cli-orchestration, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
 | Delivery Planner / Backlog Architect | decompose requirements, shape backlog, maintain GitHub Issues/Projects planning layer | no code; may update planning metadata | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
-| Implementer | implement scoped code change | yes | implementation-plan, pr-handoff |
-| Reviewer | review diff, PR body, scope, and regression risk | no by default | capability-router, test-gap-review, pr-handoff |
+| Implementer | implement scoped code change | yes | refactoring-plan, implementation-plan, pr-handoff |
+| Reviewer | review diff, PR body, scope, and regression risk | no by default | capability-router, refactoring-plan, test-gap-review, pr-handoff |
 | Tester / QA | verify tests, edge cases, bug reproduction, and validation evidence | no by default | capability-router, issue-agent-readiness, test-gap-review |
 | Security Reviewer | verify security-sensitive risks | no by default | capability-router, security-review, mcp-usage-guard |
 | Docs / Terminology | normalize sources, terminology, requirements, and docs | docs only | capability-router, source-index-builder, terminology-map-builder, documentation-sync |
@@ -63,7 +63,7 @@ Forbidden: implement production code, mark vague work as agent-ready, use GitHub
 
 Output: scoped code/docs diff, validation evidence, PR handoff.
 
-Allowed: edit files inside the current task scope as the single write-owner.
+Allowed: edit files inside the current task scope as the single write-owner. Use `refactoring-plan` before behavior-preserving refactors.
 
 Forbidden: change secrets, production config, infrastructure, or public APIs outside approved scope.
 
@@ -71,7 +71,7 @@ Forbidden: change secrets, production config, infrastructure, or public APIs out
 
 Output: review findings ordered by severity, residual risk, human review focus.
 
-Allowed: read diff, inspect tests/docs, recommend changes.
+Allowed: read diff, inspect tests/docs, verify refactoring boundaries, recommend changes.
 
 Forbidden: rewrite production code during review unless ownership is explicitly changed.
 
