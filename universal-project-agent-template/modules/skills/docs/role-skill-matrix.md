@@ -30,7 +30,7 @@ Human attention should be reserved for final merge, high-risk approval, missing 
 | lead-plus-reviewer | non-trivial acceptance criteria or PR review needed | Lead / Orchestrator, Implementer, Reviewer |
 | lead-plus-qa | tests, reproduction, or edge cases are central | Lead / Orchestrator, Implementer, Tester / QA |
 | specialist-review | security-sensitive or docs/terminology-heavy work | Lead / Orchestrator, relevant specialist, Reviewer |
-| split-required | multiple write-owners or independent subsystems needed | Lead / Orchestrator, Human Owner |
+| split-into-multiple-issues | multiple write-owners or independent subsystems needed | Lead / Orchestrator, Human Owner |
 
 ## One Write-Owner Rule
 

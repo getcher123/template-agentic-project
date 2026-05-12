@@ -81,13 +81,10 @@ Forbidden:
 
 ### Prompt to run in Codex CLI
 
-```text
 <bounded prompt for the subagent>
-```
 
 ### Expected handoff
 
-```md
 ## Subagent Handoff
 
 ### Result
@@ -113,7 +110,6 @@ accepted | needs-fixes | needs-re-review | needs-human-decision | blocked
 ### Recommended next action
 
 -
-```
 
 ### Stop conditions
 

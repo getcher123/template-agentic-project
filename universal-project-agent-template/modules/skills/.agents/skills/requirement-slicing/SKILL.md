@@ -69,11 +69,9 @@ Forbidden scope:
 
 Validation commands:
 
-```bash
-make lint
-make typecheck
-make test
-```
+- make lint
+- make typecheck
+- make test
 
 Risk:
 

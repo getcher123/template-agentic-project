@@ -56,11 +56,9 @@ Status: ready | needs-more-tests | blocked
 
 ## Validation commands to run
 
-```bash
-make lint
-make typecheck
-make test
-```
+- make lint
+- make typecheck
+- make test
 
 ## Recommendation
 

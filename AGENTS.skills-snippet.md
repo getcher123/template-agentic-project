@@ -12,7 +12,7 @@ Before starting non-trivial work, decide which skills apply:
 - `terminology-map-builder` for business/domain/code naming alignment.
 - `requirement-slicing` for turning brief/processes into epics, features, and agent-ready issues.
 - `issue-agent-readiness` before delegating an issue to Codex implementation.
-- `orchestration-plan` for multi-role or medium/high-risk tasks.
+- `orchestration-plan` for multi-role, medium-risk, or high-risk tasks.
 - `refactoring-plan` before behavior-preserving refactoring, to prevent scope creep.
 - `implementation-plan` before editing code.
 - `test-gap-review` before marking a PR ready.

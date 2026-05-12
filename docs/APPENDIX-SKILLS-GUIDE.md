@@ -488,7 +488,7 @@ implementation-plan
 Важно:
 
 ```text
-Для medium/high-risk задач implementation-plan должен быть принят человеком или Orchestrator перед редактированием кода.
+Для medium-risk задач implementation-plan требует явного плана, validation и Orchestrator synthesis. Human approval нужен только для high-risk, unsafe external actions, production/secrets/infra, public API/schema/auth/security changes или unresolved ambiguity.
 ```
 
 ### 6.8. Этап 7: review качества
@@ -919,7 +919,7 @@ recommendation
 - перед изменением кода;
 - после readiness и orchestration;
 - когда нужно понять, какие файлы менять;
-- перед medium/high-risk реализацией;
+- перед medium-risk или high-risk реализацией;
 - перед передачей задачи Implementer Agent.
 ```
 
@@ -1165,9 +1165,9 @@ MCP не должен обходить GitHub Issue, PR, CI, branch protection �
 | PM / Scope Agent | requirement-slicing, issue-agent-readiness | orchestration-plan |
 | Architect Agent | refactoring-plan, implementation-plan, documentation-sync | security-review |
 | Implementer Agent | refactoring-plan, implementation-plan | pr-handoff |
-| QA Reviewer Agent | test-gap-review | refactoring-plan, pr-handoff |
+| Tester / QA | test-gap-review | refactoring-plan, pr-handoff |
 | Security Reviewer Agent | security-review, mcp-usage-guard | test-gap-review |
-| Docs Agent | documentation-sync, terminology-map-builder | pr-handoff |
+| Docs / Terminology | documentation-sync, terminology-map-builder | pr-handoff |
 
 Правило:
 
@@ -1710,10 +1710,12 @@ pr-handoff
 
 ```text
 Orchestrator
+Delivery Planner / Backlog Architect
 Implementer
-QA Reviewer
+Reviewer
+Tester / QA
 Security Reviewer
-Docs Agent
+Docs / Terminology
 ```
 
 ---

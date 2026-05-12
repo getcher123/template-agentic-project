@@ -25,9 +25,12 @@ Read:
 
 1. Confirm agent readiness using `issue-agent-readiness`.
 2. Choose orchestration mode:
+   - `planning-and-backlog`
    - `single-agent`
-   - `orchestrator-plus-reviewer`
-   - `orchestrator-plus-specialists`
+   - `lead-plus-implementer`
+   - `lead-plus-reviewer`
+   - `lead-plus-qa`
+   - `specialist-review`
    - `split-into-multiple-issues`
 3. Select roles.
 4. Select skills.
@@ -43,7 +46,7 @@ Read:
 ```md
 ## Orchestration plan
 
-Mode: single-agent | orchestrator-plus-reviewer | orchestrator-plus-specialists | split-into-multiple-issues
+Mode: planning-and-backlog | single-agent | lead-plus-implementer | lead-plus-reviewer | lead-plus-qa | specialist-review | split-into-multiple-issues
 
 ## Selected roles
 
@@ -76,11 +79,9 @@ MCP servers:
 
 ## Validation commands
 
-```bash
-make lint
-make typecheck
-make test
-```
+- make lint
+- make typecheck
+- make test
 
 ## Escalation triggers
 

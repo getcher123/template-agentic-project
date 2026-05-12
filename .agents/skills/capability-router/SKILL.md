@@ -27,6 +27,8 @@ This skill keeps the starter workflow lean. Roles define responsibility. Skills 
 ## Procedure
 
 1. Classify the task type:
+   - planning/backlog;
+   - github-planning-layer;
    - documentation/setup;
    - feature;
    - bugfix;
@@ -37,6 +39,7 @@ This skill keeps the starter workflow lean. Roles define responsibility. Skills 
    - CI/MCP/external context.
 2. Choose required roles from the starter set:
    - Lead / Orchestrator;
+   - Delivery Planner / Backlog Architect;
    - Implementer;
    - Reviewer;
    - Tester / QA;
@@ -57,13 +60,15 @@ This skill keeps the starter workflow lean. Roles define responsibility. Skills 
 
 ### Task type
 
-<one of: documentation/setup | feature | bugfix | refactor | review | test/QA | security-sensitive | CI/MCP/external context>
+<one of: planning/backlog | github-planning-layer | documentation/setup | feature | bugfix | refactor | review | test/QA | security-sensitive | CI/MCP/external context>
 
 ### Risk level
 
 low | medium | high | critical
 
 ### Required roles
+
+<choose from: Lead / Orchestrator | Delivery Planner / Backlog Architect | Implementer | Reviewer | Tester / QA | Security Reviewer | Docs / Terminology>
 
 -
 
@@ -101,4 +106,3 @@ low | medium | high | critical
 - Do not approve the task or PR.
 - Do not add new roles, skills, or MCP servers.
 - Do not expand scope beyond the linked issue or task.
-

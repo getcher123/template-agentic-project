@@ -31,7 +31,8 @@ Read:
 7. Identify validation commands.
 8. Identify risk areas.
 9. Identify rollback notes.
-10. Wait for implementation approval when task is medium/high risk.
+10. For medium-risk tasks, require an explicit plan, validation, and Orchestrator synthesis before implementation handoff.
+11. Request human approval only for high-risk changes, unsafe external actions, production/secrets/infra access, public API/schema/auth/security changes, or unresolved ambiguity.
 
 ## Output format
 
@@ -66,11 +67,9 @@ Forbidden:
 
 ## Validation commands
 
-```bash
-make lint
-make typecheck
-make test
-```
+- make lint
+- make typecheck
+- make test
 
 ## Risks
 

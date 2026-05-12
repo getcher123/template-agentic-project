@@ -58,11 +58,13 @@ Reason:
 
 ## Required roles
 
-- Orchestrator:
+- Lead / Orchestrator:
+- Delivery Planner / Backlog Architect:
 - Implementer:
-- QA Reviewer:
+- Reviewer:
+- Tester / QA:
 - Security Reviewer:
-- Docs Agent:
+- Docs / Terminology:
 
 ## Required skills
 

@@ -58,11 +58,9 @@ Intentionally not touched:
 
 Commands run:
 
-```bash
-make lint
-make typecheck
-make test
-```
+- make lint
+- make typecheck
+- make test
 
 Results:
 
@@ -77,11 +75,13 @@ Commands not run and reason:
 
 ## Agent roles used
 
-- Orchestrator:
+- Lead / Orchestrator:
+- Delivery Planner / Backlog Architect:
 - Implementer:
-- QA Reviewer:
+- Reviewer:
+- Tester / QA:
 - Security Reviewer:
-- Docs Agent:
+- Docs / Terminology:
 
 ## Skills used
 
