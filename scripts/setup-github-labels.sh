@@ -32,6 +32,8 @@ upsert_label() {
 upsert_label agent-candidate BFDADC "May be suitable for agent work"
 upsert_label agent-ready 0E8A16 "Task is sufficiently scoped for agent execution"
 upsert_label agent-running 1D76DB "Agent is currently working on this task"
+upsert_label bug B60205 "Reproducible defect"
+upsert_label feature 0E8A16 "Product or engineering feature request"
 upsert_label needs-triage FBCA04 "Needs human triage"
 upsert_label needs-human-input D93F0B "Blocked until a human clarifies something"
 upsert_label ready-for-review 5319E7 "PR is ready for human review"
