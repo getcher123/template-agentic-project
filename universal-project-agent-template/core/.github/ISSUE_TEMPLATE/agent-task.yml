@@ -89,6 +89,7 @@ body:
     attributes:
       label: Orchestration mode
       options:
+        - planning-and-backlog
         - single-agent
         - lead-plus-implementer
         - lead-plus-reviewer
@@ -102,7 +103,7 @@ body:
     id: required-roles
     attributes:
       label: Required roles
-      description: Roles define responsibility, not separate skills.
+      description: Roles define responsibility, not separate skills. Use Delivery Planner / Backlog Architect for decomposition, backlog, GitHub Issues, or Project metadata work.
       value: |
         - Lead / Orchestrator
         - Implementer

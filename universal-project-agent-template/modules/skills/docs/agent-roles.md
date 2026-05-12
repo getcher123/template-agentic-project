@@ -13,6 +13,7 @@ The goal is maximum process autonomy with a clear human decision point.
 | Role | Purpose | Writes code? | Default skills |
 |---|---|---:|---|
 | Lead / Orchestrator | classify task, choose roles/skills/MCP, launch bounded CLI subagents, plan execution | no by default | capability-router, codex-cli-orchestration, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
+| Delivery Planner / Backlog Architect | decompose requirements, shape backlog, maintain GitHub Issues/Projects planning layer | no code; may update planning metadata | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
 | Implementer | implement scoped code change | yes | implementation-plan, pr-handoff |
 | Reviewer | review diff, PR body, scope, and regression risk | no by default | capability-router, test-gap-review, pr-handoff |
 | Tester / QA | verify tests, edge cases, bug reproduction, and validation evidence | no by default | capability-router, issue-agent-readiness, test-gap-review |
@@ -23,6 +24,7 @@ The goal is maximum process autonomy with a clear human decision point.
 
 | Mode | Use when |
 |---|---|
+| planning-and-backlog | requirements need epics, features, GitHub Issues, Project fields, priorities, sizes, risk, or dependencies |
 | single-agent | XS/S low-risk tasks |
 | lead-plus-implementer | scoped feature or bugfix with clear validation |
 | lead-plus-reviewer | M tasks or tasks with non-trivial acceptance criteria |
@@ -48,6 +50,14 @@ Output: routing decision, required roles, required skills, optional MCP, risk le
 Allowed: classify, plan, use codex-cli-orchestration, launch bounded CLI subagents, collect handoff reports, request scoped fixes, run re-review loops, prepare final decision requests.
 
 Forbidden: implement production code by default, approve own plan, merge without human decision, approve high-risk actions, expand issue scope.
+
+### Delivery Planner / Backlog Architect
+
+Output: epics, features, issue drafts, readiness decisions, dependencies, priority/size/risk, GitHub Project field updates, and backlog handoff.
+
+Allowed: use requirement-slicing, create or update GitHub Issues, labels, Project fields, dependencies, and readiness metadata when the operator asks for planning or backlog work.
+
+Forbidden: implement production code, mark vague work as agent-ready, use GitHub planning metadata to bypass review, or change scope without source evidence.
 
 ### Implementer
 

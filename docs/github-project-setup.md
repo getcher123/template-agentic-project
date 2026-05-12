@@ -29,7 +29,7 @@ Project setup requires GitHub Projects permissions. If you automate this with `g
 | Size | Single select | XS, S, M, L, XL |
 | Risk | Single select | Low, Medium, High, Critical |
 | Area | Single select | Backend, Frontend, Data, AI, Infra, Tests, Docs |
-| Agent mode | Single select | None, Discovery, Implementation, Review |
+| Agent mode | Single select | None, Planning, Discovery, Implementation, Review |
 | Owner | Text | human or agent owner |
 | Branch | Text | branch name |
 | Worktree | Text | local worktree folder |

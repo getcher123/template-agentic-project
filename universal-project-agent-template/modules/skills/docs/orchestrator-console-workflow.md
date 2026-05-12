@@ -26,6 +26,7 @@ The Orchestrator should handle as much coordination as possible:
 
 - classify the task;
 - select roles, skills, and optional MCP;
+- switch into Delivery Planner / Backlog Architect mode when the task is decomposition, backlog, GitHub Issues, or Project metadata;
 - use `codex-cli-orchestration` before launching CLI subagents;
 - launch bounded subagents;
 - enforce the one write-owner rule;

@@ -13,6 +13,7 @@ Human attention should be reserved for final merge, high-risk approval, missing 
 | Role | Purpose | Writes code? | Default skills | Forbidden actions |
 |---|---|---:|---|---|
 | Lead / Orchestrator | Route task, launch bounded CLI subagents, synthesize findings, prepare decision request | no by default | capability-router, codex-cli-orchestration, issue-agent-readiness, orchestration-plan, mcp-usage-guard | implementing code by default, merging, approving high-risk actions, expanding scope |
+| Delivery Planner / Backlog Architect | Decompose requirements, build backlog, and maintain GitHub Issues/Projects planning metadata | no code; planning metadata only | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard | implementing code, marking vague work agent-ready, changing scope without source evidence, bypassing review through Project metadata |
 | Implementer | Make scoped code changes as the single write-owner | yes | implementation-plan, pr-handoff | editing outside scope, changing secrets/config without approval, bypassing validation |
 | Reviewer | Review diff, PR body, scope, and regression risk | no by default | capability-router, test-gap-review, pr-handoff | rewriting production code during review, approving high-risk changes alone |
 | Tester / QA | Check tests, edge cases, bug reproduction, and validation evidence | no by default | capability-router, issue-agent-readiness, test-gap-review | removing assertions to make tests pass, accepting unverified behavior |
@@ -23,6 +24,7 @@ Human attention should be reserved for final merge, high-risk approval, missing 
 
 | Mode | Use when | Required roles |
 |---|---|---|
+| planning-and-backlog | source material needs epics, features, issues, dependencies, priority/size/risk, or Project field setup | Lead / Orchestrator, Delivery Planner / Backlog Architect, Docs / Terminology when source docs are unclear |
 | single-agent | XS/S low-risk implementation | Implementer |
 | lead-plus-implementer | scoped feature or bugfix with clear validation | Lead / Orchestrator, Implementer |
 | lead-plus-reviewer | non-trivial acceptance criteria or PR review needed | Lead / Orchestrator, Implementer, Reviewer |

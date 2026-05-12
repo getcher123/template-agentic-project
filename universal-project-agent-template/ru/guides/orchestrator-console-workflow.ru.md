@@ -25,6 +25,7 @@ Human operator
 Orchestrator должен брать на себя максимум координации:
 
 - выбрать roles, skills, risk level и optional MCP;
+- перейти в режим Delivery Planner / Backlog Architect, если задача про decomposition, backlog, GitHub Issues или Project metadata;
 - использовать `codex-cli-orchestration` перед запуском CLI-субагентов;
 - запустить bounded subagents;
 - следить за правилом one write-owner;

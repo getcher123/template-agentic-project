@@ -17,10 +17,11 @@
 
 | Тип задачи | Роли | Skills | MCP |
 |---|---|---|---|
-| Новый проект | Lead / Orchestrator, Docs / Terminology | capability-router, source-index-builder, terminology-map-builder, requirement-slicing | none |
-| Адаптация проекта | Lead / Orchestrator, Docs / Terminology, Reviewer | capability-router, source-index-builder, terminology-map-builder, documentation-sync | GitHub MCP при нехватке issue/PR контекста |
+| Новый проект | Lead / Orchestrator, Delivery Planner / Backlog Architect, Docs / Terminology | capability-router, source-index-builder, terminology-map-builder, requirement-slicing | none |
+| Адаптация проекта | Lead / Orchestrator, Delivery Planner / Backlog Architect, Docs / Terminology, Reviewer | capability-router, source-index-builder, terminology-map-builder, documentation-sync, requirement-slicing | GitHub MCP при нехватке issue/PR контекста |
+| Декомпозиция backlog | Delivery Planner / Backlog Architect, Docs / Terminology, Lead / Orchestrator | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan | GitHub MCP для Issues/Projects |
+| GitHub planning layer | Delivery Planner / Backlog Architect, Lead / Orchestrator | capability-router, issue-agent-readiness, mcp-usage-guard, orchestration-plan | GitHub MCP для Issues, Projects, labels, Actions |
 | Feature | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | Context7 при необходимости |
 | Bugfix | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | GitHub MCP при необходимости |
 | Review | Reviewer, Tester / QA | capability-router, test-gap-review, pr-handoff | GitHub MCP для PR/CI |
 | Security-sensitive | Lead / Orchestrator, Security Reviewer, Reviewer | capability-router, security-review, mcp-usage-guard, test-gap-review | GitHub MCP read-only при необходимости |
-

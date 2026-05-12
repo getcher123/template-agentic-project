@@ -38,6 +38,7 @@ Rules:
 | Role | Default skills |
 |---|---|
 | Lead / Orchestrator | capability-router, codex-cli-orchestration, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
+| Delivery Planner / Backlog Architect | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
 | Implementer | implementation-plan, pr-handoff |
 | Reviewer | capability-router, test-gap-review, pr-handoff |
 | Tester / QA | capability-router, issue-agent-readiness, test-gap-review |

@@ -6,6 +6,7 @@
 - GitHub Projects is the canonical delivery board.
 - One issue maps to one branch, one worktree, and one PR.
 - Codex can work only on sufficiently scoped issues.
+- Delivery Planner / Backlog Architect owns decomposition, backlog shape, GitHub Issues/Projects metadata, priority, size, risk, and dependencies.
 
 ## Project Statuses
 
@@ -44,4 +45,3 @@ An issue is agent-ready only when it has:
 | Date | Decision | Owner | Source |
 |---|---|---|---|
 | `<date>` | `<decision>` | `<owner>` | `<issue/doc/source>` |
-

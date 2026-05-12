@@ -51,6 +51,7 @@ Orchestrator mode:
 
 - Run `capability-router` before selecting subagents.
 - Select required roles, skills, optional MCP, risk level, and escalation path.
+- Use Delivery Planner / Backlog Architect mode for requirements decomposition, backlog shaping, GitHub Issues, labels, Project fields, priority, size, risk, and dependencies.
 - Launch only bounded subagents with clear outputs.
 - Keep Reviewer, Tester / QA, Security Reviewer, and Docs / Terminology read-only by default.
 - Keep exactly one write-owner per worktree.

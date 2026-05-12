@@ -15,6 +15,7 @@
 
 - один GitHub Issue = одна задача;
 - человек общается с одним Lead / Orchestrator агентом в VS Code;
+- Delivery Planner / Backlog Architect отвечает за decomposition, backlog, GitHub Issues/Projects metadata, priority, size, risk и dependencies;
 - Orchestrator автономно запускает CLI-субагентов и собирает их handoff reports;
 - одна задача = одна branch;
 - одна branch = одна worktree;

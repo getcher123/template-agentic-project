@@ -22,8 +22,8 @@ Task or issue
 → Raw sources, when needed
 → source-index-builder
 → terminology-map-builder
-→ requirement-slicing
-→ issue-agent-readiness
+→ requirement-slicing, for backlog decomposition
+→ issue-agent-readiness, for issue and Project readiness
 → orchestration-plan
 → implementation-plan
 → implementation
@@ -41,8 +41,8 @@ Task or issue
 | codex-cli-orchestration | when Lead / Orchestrator needs to launch and manage Codex CLI subagents | CLI subagent run plan, prompt, expected handoff, stop conditions, re-review criteria |
 | source-index-builder | starting a new project or transforming an existing one | `docs/00-source-index.md` entries, reliability, open questions |
 | terminology-map-builder | terms are unclear or business/code language diverges | canonical terminology table |
-| requirement-slicing | turning brief/processes into GitHub Issues | epics, features, issue drafts, dependencies |
-| issue-agent-readiness | before assigning work to Codex | readiness decision and missing info |
+| requirement-slicing | turning brief/processes into GitHub Issues and backlog slices | epics, features, issue drafts, dependencies |
+| issue-agent-readiness | before assigning work to Codex or marking Project items ready | readiness decision, missing info, recommended labels/status |
 | orchestration-plan | task needs multiple roles, skills, or risk review | role plan, skill plan, write-owner, execution sequence |
 | implementation-plan | before code changes | files likely to change, steps, tests, validation |
 | test-gap-review | before PR readiness | missing tests, edge cases, validation gaps |
@@ -88,4 +88,5 @@ Do not create a new skill until the workflow has repeated at least three times a
 | Routing and orchestration | capability-router, codex-cli-orchestration |
 | Core delivery | issue-agent-readiness, implementation-plan, pr-handoff |
 | Project setup | source-index-builder, terminology-map-builder, requirement-slicing, documentation-sync |
+| Backlog and GitHub planning | requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
 | Review and risk | orchestration-plan, test-gap-review, security-review, mcp-usage-guard |

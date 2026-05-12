@@ -1097,7 +1097,8 @@ MCP не должен обходить GitHub Issue, PR, CI, branch protection �
 | Capability routing | capability-router | codex-cli-orchestration, issue-agent-readiness, mcp-usage-guard |
 | Сбор источников | source-index-builder | terminology-map-builder |
 | Терминология | terminology-map-builder | source-index-builder, documentation-sync |
-| Backlog | requirement-slicing | issue-agent-readiness |
+| Backlog | requirement-slicing | issue-agent-readiness, orchestration-plan |
+| GitHub planning layer | issue-agent-readiness | requirement-slicing, mcp-usage-guard |
 | Triage issue | issue-agent-readiness | terminology-map-builder |
 | Планирование задачи | orchestration-plan | implementation-plan, mcp-usage-guard |
 | Реализация | implementation-plan | pr-handoff |
@@ -1114,6 +1115,7 @@ MCP не должен обходить GitHub Issue, PR, CI, branch protection �
 | Role | Основные skills | Дополнительные skills |
 |---|---|---|
 | Orchestrator | issue-agent-readiness, orchestration-plan | mcp-usage-guard, pr-handoff |
+| Delivery Planner / Backlog Architect | requirement-slicing, issue-agent-readiness | capability-router, orchestration-plan, mcp-usage-guard |
 | Terminology / Analyst Agent | source-index-builder, terminology-map-builder | requirement-slicing, documentation-sync |
 | PM / Scope Agent | requirement-slicing, issue-agent-readiness | orchestration-plan |
 | Architect Agent | implementation-plan, documentation-sync | security-review |
