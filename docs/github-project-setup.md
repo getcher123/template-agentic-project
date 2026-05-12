@@ -18,7 +18,7 @@ The helper uses `gh api`, so it works even when older GitHub CLI versions do not
 
 ## Project Fields
 
-Create one GitHub Project for `<PROJECT_NAME>` with these fields:
+Create one GitHub Project for `Template Agentic Project` with these fields:
 
 Project setup requires GitHub Projects permissions. If you automate this with `gh api graphql`, the token needs Projects access (`read:project` to inspect projects and project write access to create or update them). If the local `gh` version does not include `gh project`, create the Project and fields in the GitHub web UI or use GraphQL after refreshing token scopes.
 
@@ -60,7 +60,7 @@ Minimum recommended rules:
 
 ## Branch Protection
 
-Protect `<DEFAULT_BRANCH>` with:
+Protect `main` with:
 
 - Pull request required before merge.
 - Required status checks for CI.

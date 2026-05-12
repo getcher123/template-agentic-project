@@ -1,0 +1,28 @@
+# Default ownership
+* @getcher123
+
+# Application code
+/app/ @getcher123
+/src/ @getcher123
+
+# Database and migrations
+/db/ @getcher123
+/migrations/ @getcher123
+
+# Data, AI, and pipelines
+/pipelines/ @getcher123
+/notebooks/ @getcher123
+/models/ @getcher123
+
+# Infrastructure, CI, deployment
+/infra/ @getcher123
+/.github/workflows/ @getcher123
+/docker/ @getcher123
+/Dockerfile @getcher123
+/docker-compose.yml @getcher123
+
+# Security-sensitive files
+/security/ @getcher123
+/.github/CODEOWNERS @getcher123
+/.env.example @getcher123
+
