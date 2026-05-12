@@ -1,0 +1,28 @@
+# Default ownership
+* <PRIMARY_OWNER>
+
+# Application code
+/app/ <PRIMARY_OWNER>
+/src/ <PRIMARY_OWNER>
+
+# Database and migrations
+/db/ <PRIMARY_OWNER>
+/migrations/ <PRIMARY_OWNER>
+
+# Data, AI, and pipelines
+/pipelines/ <PRIMARY_OWNER>
+/notebooks/ <PRIMARY_OWNER>
+/models/ <PRIMARY_OWNER>
+
+# Infrastructure, CI, deployment
+/infra/ <PRIMARY_OWNER>
+/.github/workflows/ <PRIMARY_OWNER>
+/docker/ <PRIMARY_OWNER>
+/Dockerfile <PRIMARY_OWNER>
+/docker-compose.yml <PRIMARY_OWNER>
+
+# Security-sensitive files
+/security/ <PRIMARY_OWNER>
+/.github/CODEOWNERS <PRIMARY_OWNER>
+/.env.example <PRIMARY_OWNER>
+

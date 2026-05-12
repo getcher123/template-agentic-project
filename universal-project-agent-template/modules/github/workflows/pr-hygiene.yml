@@ -1,0 +1,37 @@
+name: pr-hygiene
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - ready_for_review
+
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  check-pr-body:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR body has required sections
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          required_sections=(
+            "Linked Issue"
+            "Summary"
+            "Validation"
+            "Agent Handoff Report"
+            "Human review focus"
+          )
+
+          for section in "${required_sections[@]}"; do
+            if ! grep -qi "$section" <<< "$PR_BODY"; then
+              echo "Missing required PR section: $section"
+              exit 1
+            fi
+          done
+

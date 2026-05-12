@@ -1,0 +1,157 @@
+name: Agent Task
+description: A scoped implementation task suitable for Codex or another coding agent.
+title: "[Agent Task]: "
+labels: ["agent-candidate", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for tasks that may be delegated to Codex. A task becomes agent-ready only when objective, scope, constraints, and validation are clear.
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What should change when this task is done?
+      placeholder: Add a small, testable behavior change.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why is this needed? Include business or technical context.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Concrete observable outcomes.
+      value: |
+        -
+        -
+        -
+    validations:
+      required: true
+
+  - type: textarea
+    id: allowed-scope
+    attributes:
+      label: Allowed scope
+      description: Files, directories, modules, or layers the agent may touch.
+      value: |
+        -
+    validations:
+      required: true
+
+  - type: textarea
+    id: forbidden-scope
+    attributes:
+      label: Forbidden scope
+      description: Files, directories, or behaviors that are out of bounds.
+      value: |
+        - production configuration
+        - secrets
+        - unrelated refactors
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - low
+        - medium
+        - high
+        - critical
+    validations:
+      required: true
+
+  - type: dropdown
+    id: size
+    attributes:
+      label: Task size
+      options:
+        - XS: one file or docs-only
+        - S: small code change with tests
+        - M: multi-file scoped change
+        - L: needs decomposition before agent work
+        - XL: epic, not agent-ready
+    validations:
+      required: true
+
+  - type: dropdown
+    id: orchestration-mode
+    attributes:
+      label: Orchestration mode
+      options:
+        - single-agent
+        - lead-plus-implementer
+        - lead-plus-reviewer
+        - lead-plus-qa
+        - specialist-review
+        - split-into-multiple-issues
+    validations:
+      required: true
+
+  - type: textarea
+    id: required-roles
+    attributes:
+      label: Required roles
+      description: Roles define responsibility, not separate skills.
+      value: |
+        - Lead / Orchestrator
+        - Implementer
+    validations:
+      required: true
+
+  - type: textarea
+    id: required-skills
+    attributes:
+      label: Required skills
+      description: Use capability-router to choose the smallest sufficient skill set.
+      value: |
+        - capability-router
+        - issue-agent-readiness
+        - implementation-plan
+        - pr-handoff
+    validations:
+      required: true
+
+  - type: input
+    id: write-owner
+    attributes:
+      label: Write owner
+      description: The single human or agent allowed to modify files in the task worktree.
+      placeholder: Implementer / @username / Codex session owner
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation commands
+      description: Commands that must pass before PR.
+      value: |
+        make lint
+        make typecheck
+        make test
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+      value: |
+        - Pull Request is opened and linked to this issue.
+        - CI is green or local validation evidence is attached.
+        - Tests cover the changed behavior when behavior changed.
+        - PR description includes agent handoff report.
+        - Human reviewer knows what to inspect.
+    validations:
+      required: true

@@ -1,0 +1,38 @@
+# Secrets and local environment
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cert
+id_rsa*
+id_ed25519*
+
+# Local/private work areas
+local/
+repo/local/
+_archived/
+tmp/
+temp/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Runtime/cache artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+build/
+coverage/
