@@ -39,6 +39,8 @@ Project setup requires GitHub Projects permissions. If you automate this with `g
 
 ## Views
 
+Views may need to be created in the GitHub web UI. Some GitHub CLI and GraphQL versions can read Project views but do not expose stable create/update mutations for them.
+
 | View | Purpose | Filter |
 |---|---|---|
 | Board | Normal kanban | all open items |
@@ -49,6 +51,8 @@ Project setup requires GitHub Projects permissions. If you automate this with `g
 | Done This Week | Shipped work | status:Done updated recently |
 
 ## Automations
+
+Automations may need to be configured in the GitHub web UI. Some API surfaces expose existing workflows but not create/update operations for the recommended rules.
 
 Minimum recommended rules:
 
