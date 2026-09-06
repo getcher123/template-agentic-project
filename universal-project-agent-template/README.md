@@ -157,8 +157,10 @@ For code use configured `make local-validate TARGETED_TESTS="..."`; a full local
 suite is a diagnostic option. CI and human review remain required.
 
 The PR template is the only body source. Fill it with actual evidence, then use
-`scripts/agent-finish.sh ISSUE --body-file FILE --validation docs|targeted|full`
-when that GitHub lifecycle is authorized.
+`scripts/agent-finish.sh ISSUE --body-file FILE` when that GitHub lifecycle is
+authorized. If the selected local checks have not already run for the current
+commit, add `--run-validation docs|targeted|full`; the helper does not repeat
+completed checks by default.
 
 The source repository derives its root mirrors with
 `python3 scripts/sync-template-mirrors.py`. Stage new package files, then run

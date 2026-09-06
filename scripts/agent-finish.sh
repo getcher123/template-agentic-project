@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 if [ "$#" -lt 1 ]; then
-  echo "Usage: agent-finish.sh ISSUE_NUMBER [BASE_BRANCH] --body-file FILE --validation docs|targeted|full" >&2
+  echo "Usage: agent-finish.sh ISSUE_NUMBER [BASE_BRANCH] --body-file FILE [--run-validation docs|targeted|full]" >&2
   exit 2
 fi
 ISSUE_NUMBER="$1"; shift
@@ -13,7 +13,7 @@ MODE=""
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --body-file) BODY_FILE="${2:?Missing body file}"; shift 2 ;;
-    --validation) MODE="${2:?Missing validation mode}"; shift 2 ;;
+    --run-validation|--validation) MODE="${2:?Missing validation mode}"; shift 2 ;;
     *) echo "Unknown option" >&2; exit 2 ;;
   esac
 done
@@ -28,16 +28,18 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 if [ -z "$BODY_FILE" ]; then
   echo "Fill .github/pull_request_template.md into a separate file with actual evidence." >&2
-  echo "Then pass --body-file FILE and --validation docs|targeted|full." >&2
+  echo "Then pass --body-file FILE. Add --run-validation only when checks have not already run for HEAD." >&2
   exit 2
 fi
 python3 scripts/validate-pr-body.py --body "$BODY_FILE"
-case "$MODE" in
-  docs) make validate-docs ;;
-  targeted) : "${TARGETED_TESTS:?Name the affected tests}"; make local-validate TARGETED_TESTS="$TARGETED_TESTS" ;;
-  full) make lint; make typecheck; make test ;;
-  *) echo "Select docs, targeted or full validation explicitly." >&2; exit 2 ;;
-esac
+if [ -n "$MODE" ]; then
+  case "$MODE" in
+    docs) make validate-docs ;;
+    targeted) : "${TARGETED_TESTS:?Name the affected tests}"; make local-validate TARGETED_TESTS="$TARGETED_TESTS" ;;
+    full) make lint; make typecheck; make test ;;
+    *) echo "Select docs, targeted or full for --run-validation." >&2; exit 2 ;;
+  esac
+fi
 git diff --check
 if [ -n "$(git status --porcelain)" ]; then
   echo "Validation changed the tree; inspect and commit before PR." >&2; exit 1

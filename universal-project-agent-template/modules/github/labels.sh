@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-if ! command -v gh >/dev/null 2>&1; then
-  echo "GitHub CLI is required: https://cli.github.com/" >&2
-  exit 1
-fi
+ROOT="$(git rev-parse --show-toplevel)"
+"$ROOT/scripts/check-github-context.sh" >/dev/null
+REPOSITORY_API="repos/${AGENT_GITHUB_REPOSITORY}"
 
-gh auth status >/dev/null
+github_api() {
+  GH_TOKEN="$AGENT_GITHUB_TOKEN" gh api "$@"
+}
 
 upsert_label() {
   local name="$1"
   local color="$2"
   local description="$3"
 
-  if gh api "repos/{owner}/{repo}/labels/${name}" --silent >/dev/null 2>&1; then
-    gh api --method PATCH "repos/{owner}/{repo}/labels/${name}" \
+  if github_api "${REPOSITORY_API}/labels/${name}" --silent >/dev/null 2>&1; then
+    github_api --method PATCH "${REPOSITORY_API}/labels/${name}" \
       -f "color=${color}" \
       -f "description=${description}" \
       --silent
     echo "updated ${name}"
   else
-    gh api --method POST "repos/{owner}/{repo}/labels" \
+    github_api --method POST "${REPOSITORY_API}/labels" \
       -f "name=${name}" \
       -f "color=${color}" \
       -f "description=${description}" \

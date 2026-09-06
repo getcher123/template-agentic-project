@@ -25,13 +25,16 @@ def pairs():
         for source in sorted((PACKAGE / directory).rglob("*")):
             if source.is_file() and "__pycache__" not in source.parts:
                 yield source, ROOT / target / source.relative_to(PACKAGE / directory)
+    yield PACKAGE / "modules/github/CODEOWNERS", ROOT / ".github/CODEOWNERS"
+    yield PACKAGE / "modules/github/PROJECT_SETUP.md", ROOT / "docs/github-project-setup.md"
+    yield PACKAGE / "modules/github/labels.sh", ROOT / "scripts/setup-github-labels.sh"
     yield PACKAGE / "core/AGENTS.md", ROOT / "AGENTS.md"
 
 
 def expected(source, target):
     data = source.read_bytes()
     if (source.is_relative_to(PACKAGE / "core")
-            or source.is_relative_to(PACKAGE / "modules/github/workflows")):
+            or source.is_relative_to(PACKAGE / "modules/github")):
         text = data.decode()
         for old, new in IDENTITY.items():
             text = text.replace(old, new)
