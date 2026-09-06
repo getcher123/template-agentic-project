@@ -17,10 +17,13 @@ Configured in:
 .codex/config.toml
 ```
 
-Required local environment variable:
+Before enabling, explicitly select target-project values:
 
 ```bash
-export GITHUB_PERSONAL_ACCESS_TOKEN="$(gh auth token)"
+export AGENT_GITHUB_TOKEN='<retrieve from the target project secret store>'
+export AGENT_GITHUB_ACTOR='<expected login>'
+export AGENT_GITHUB_REPOSITORY='<owner/repository>'
+scripts/check-github-context.sh
 ```
 
 Configured toolsets:
@@ -37,6 +40,10 @@ Use GitHub MCP for:
 - checking repository context;
 - triage support;
 - PR and issue automation after explicit instruction.
+
+The wrapper checks that the token resolves to the expected actor and that the
+current `origin` matches the expected repository. It never prints the token.
+Do not derive this token automatically from the currently active `gh` account.
 
 Do not use GitHub MCP for:
 

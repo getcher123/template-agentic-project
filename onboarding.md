@@ -1,5 +1,10 @@
 # Onboarding v2: трансформация любого проекта в мультиагентную разработку с Codex, VS Code, GitHub Issues, Projects и git worktree
 
+> **Исторический материал (2026-05-03).** Не используйте команды, шаблоны PR
+> и обязательную последовательность из этого файла как актуальные инструкции.
+> Действующие правила находятся в `AGENTS.md`, `docs/START_HERE.md`,
+> `docs/07-delivery-model.md`, `.agents/skills/` и реальных файлах `.github/`.
+
 Версия: 2026-05-03
 
 Документ описывает целевую операционную модель для нового или существующего проекта, который нужно вести через AI-native workflow: **VS Code + Codex IDE extension + Codex CLI + GitHub Issues + GitHub Projects + Pull Requests + GitHub Actions + git worktree**.
@@ -2091,4 +2096,3 @@ GitHub Issue
 ```
 
 Это и есть базовая операционная система для Codex-native разработки.
-

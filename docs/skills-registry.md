@@ -1,98 +1,33 @@
-# Skills Registry
+# Skills registry
 
-This registry defines the minimum skills used in the project startup and multiagent delivery workflow.
+This is a menu. Start from the task and select only procedures that affect the
+next decision. Reuse the approved task card in the issue/handoff.
 
-## Primary workflow
-
-The default operating model is Orchestrator Console Workflow:
-
-```text
-Human operator -> Lead / Orchestrator in VS Code -> CLI subagents -> handoff reports -> Orchestrator synthesis -> decision request
-```
-
-The Orchestrator should maximize autonomous coordination and ask the human only for final merge, high-risk approval, missing business decisions, or unsafe operations.
-
-## Skill lifecycle
-
-```text
-Task or issue
-→ capability-router
-→ selected roles and skills
-→ codex-cli-orchestration, when CLI subagents are needed
-→ Raw sources, when needed
-→ source-index-builder
-→ terminology-map-builder
-→ requirement-slicing, for backlog decomposition
-→ issue-agent-readiness, for issue and Project readiness
-→ orchestration-plan
-→ refactoring-plan, when behavior-preserving refactor is proposed
-→ implementation-plan
-→ implementation
-→ test-gap-review
-→ security-review when needed
-→ documentation-sync
-→ pr-handoff
-```
-
-## Skills
-
-| Skill | Use when | Output |
-|---|---|---|
-| capability-router | before non-trivial work, to select roles, skills, MCP, risk, and escalation | routing summary, required roles, required skills, optional MCP, missing info |
-| codex-cli-orchestration | when Lead / Orchestrator needs to launch and manage Codex CLI subagents | CLI subagent run plan, prompt, expected handoff, stop conditions, re-review criteria |
-| source-index-builder | starting a new project or transforming an existing one | `docs/00-source-index.md` entries, reliability, open questions |
-| terminology-map-builder | terms are unclear or business/code language diverges | canonical terminology table |
-| requirement-slicing | turning brief/processes into GitHub Issues and backlog slices | epics, features, issue drafts, dependencies |
-| issue-agent-readiness | before assigning work to Codex or marking Project items ready | readiness decision, missing info, recommended labels/status |
-| orchestration-plan | task needs multiple roles, skills, or risk review | role plan, skill plan, write-owner, execution sequence |
-| refactoring-plan | before behavior-preserving refactoring | refactor status, trigger, invariants, allowed/forbidden changes, tests, validation, rollback notes |
-| implementation-plan | before code changes | files likely to change, steps, tests, validation |
-| test-gap-review | before PR readiness | missing tests, edge cases, validation gaps |
-| security-review | auth, billing, DB, infra, CI, dependency, secret, data exposure risks | security findings and escalation decision |
-| documentation-sync | behavior, terminology, API, or customer-facing docs changed | docs update plan and docs diff guidance |
-| pr-handoff | before opening/updating PR | PR-ready handoff report |
-| mcp-usage-guard | before using MCP tools | MCP usage plan, permission/risk decision |
-
-## Explicit invocation examples
-
-```text
-Use $capability-router for issue #12. Choose required roles, required skills, optional MCP, and escalation.
-```
-
-```text
-Use $codex-cli-orchestration to prepare a read-only Reviewer subagent prompt for the current diff.
-```
-
-```text
-Use $issue-agent-readiness for issue #12 and tell me whether it is agent-ready.
-```
-
-```text
-Use $orchestration-plan and $mcp-usage-guard. Decide if GitHub MCP is needed for this task.
-```
-
-```text
-Use $refactoring-plan before refactoring the parser module. Decide whether it is approved-in-scope or needs a separate issue.
-```
-
-```text
-Use $test-gap-review on the current diff. Do not modify files.
-```
-
-```text
-Use $pr-handoff and prepare the PR body for the current branch.
-```
-
-## Design rule
-
-Do not create a new skill until the workflow has repeated at least three times and the procedure is stable enough to document.
-
-## Starter skill groups
-
-| Group | Skills |
+| Skill | Use when |
 |---|---|
-| Routing and orchestration | capability-router, codex-cli-orchestration |
-| Core delivery | issue-agent-readiness, refactoring-plan, implementation-plan, pr-handoff |
-| Project setup | source-index-builder, terminology-map-builder, requirement-slicing, documentation-sync |
-| Backlog and GitHub planning | requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
-| Review and risk | orchestration-plan, test-gap-review, security-review, mcp-usage-guard |
+| capability-router | Non-trivial task needs level, C/R/U, model tier and authority selection |
+| implementation-plan | Implementation decisions are missing before changes |
+| issue-agent-readiness | Preparing delegation or verifying a changed task contract |
+| orchestration-plan | One batch has dependencies or multiple roles |
+| program-orchestrator | Two or more related batches share Leads, surfaces or merge order |
+| codex-cli-orchestration | Dispatching concrete independent subagent work |
+| source-index-builder | Source provenance needs discovery |
+| terminology-map-builder | Business and technical terms conflict |
+| requirement-slicing | Turning requirements into bounded tasks |
+| refactoring-plan | A behavior-preserving refactor needs explicit invariants/scope |
+| test-gap-review | Acceptance lacks reliable independent tests |
+| security-review | A sensitive boundary changed or project policy requires its review |
+| documentation-sync | Changed behavior or delivery rules affect exact documents |
+| pr-handoff | Filling the canonical repository PR template with real evidence |
+| mcp-usage-guard | An external operation needs a necessity/authority check |
+
+One implementer is enough for a bounded sequential task. Roles may be combined.
+Use a standard model for mechanical work and stronger reasoning for difficult
+semantics/architecture. A capable model grants no authority.
+
+No mandatory chain through every skill, repeated whole-project reading, full
+local gate per checkpoint, or repeated review of unchanged code. The actual
+project's required CI and human review remain in force.
+
+Create a skill only when a concrete reusable procedure improves decisions;
+avoid new files that merely duplicate AGENTS.md or the task card.

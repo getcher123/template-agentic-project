@@ -2,13 +2,18 @@
 
 ## Quality Gates
 
-Before a pull request is ready for review:
+Choose configured local checks appropriate to the diff. Application changes
+need named affected tests; a full local run is an explicit diagnostic option.
+The required CI checks for the final SHA remain mandatory:
 
 ```bash
 make lint
 make typecheck
 make test
 ```
+
+Template-kit checks (`make validate-docs`) validate instructions and templates,
+not application behavior. Report every unrun command and its residual risk.
 
 ## Security Rules
 
@@ -37,4 +42,3 @@ make test
 - One worktree has one write-owner.
 - Reviewer agents are read-only unless ownership is explicitly changed.
 - MCP access must be justified and reported in the handoff.
-

@@ -2,36 +2,24 @@ name: pr-hygiene
 
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - ready_for_review
+    types: [opened, edited, synchronize, ready_for_review]
 
 permissions:
-  pull-requests: read
   contents: read
+
+concurrency:
+  group: pr-hygiene-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   check-pr-body:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Validate PR body has required sections
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Validate canonical PR contract
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-        run: |
-          required_sections=(
-            "Linked Issue"
-            "Summary"
-            "Validation"
-            "Agent Handoff Report"
-            "Human review focus"
-          )
-
-          for section in "${required_sections[@]}"; do
-            if ! grep -qi "$section" <<< "$PR_BODY"; then
-              echo "Missing required PR section: $section"
-              exit 1
-            fi
-          done
-
+        run: printf '%s' "$PR_BODY" | python3 scripts/validate-pr-body.py --body -

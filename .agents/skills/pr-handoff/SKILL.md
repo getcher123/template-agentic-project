@@ -1,123 +1,20 @@
 ---
 name: pr-handoff
-description: Use before opening or updating a Pull Request to produce a complete PR handoff: linked issue, summary, validation, commands not run, risks, human review focus, rollback notes, roles, skills, and MCP usage.
+description: Fill the repository's canonical PR template with actual validation and exact-SHA review evidence; do not maintain a second template.
 ---
 
-# PR Handoff
+# Pr Handoff
 
-## Purpose
+Read `.github/pull_request_template.md`, the task, diff, exact SHA and validation.
+That file is the only PR-body template. Preserve its headings including
+Human Review Focus and Rollback Notes. Never paste an incompatible skill copy.
 
-Prepare a PR-ready handoff that allows a human reviewer to understand scope, validation, risks, and follow-up work.
+State objective/scope, tests run and actual results, unrun checks with reasons,
+review verdicts and SHAs, changed boundaries, external actions and rollback.
+Do not precheck claims about tests, secrets, scope or CI that were not verified.
+A read-only agent review is not a human or CODEOWNERS approval.
 
-## Inputs
-
-Read:
-
-1. GitHub Issue.
-2. Current branch name.
-3. Current diff.
-4. Commit history for the branch.
-5. Validation command results.
-6. Findings from QA, security, docs, or other reviewers.
-
-## Procedure
-
-1. Link the issue.
-2. Summarize changes in bullets.
-3. List touched areas.
-4. State validation commands and results.
-5. List commands not run and why.
-6. Summarize agent roles and skills used.
-7. Summarize MCP usage, if any.
-8. List risk areas.
-9. Give human reviewer focus points.
-10. Provide rollback notes.
-
-## Output format
-
-```md
-## Linked issue
-
-Closes #
-
-## Summary
-
-- 
-
-## Scope
-
-Touched areas:
-
-- 
-
-Intentionally not touched:
-
-- 
-
-## Validation
-
-Commands run:
-
-- make lint
-- make typecheck
-- make test
-
-Results:
-
-- lint:
-- typecheck:
-- tests:
-- CI:
-
-Commands not run and reason:
-
-- 
-
-## Agent roles used
-
-- Lead / Orchestrator:
-- Delivery Planner / Backlog Architect:
-- Implementer:
-- Reviewer:
-- Tester / QA:
-- Security Reviewer:
-- Docs / Terminology:
-
-## Skills used
-
-- 
-
-## MCP usage
-
-- github:
-- context7:
-- none:
-
-## Risk areas
-
-- 
-
-## Human review focus
-
-- 
-
-## Rollback notes
-
-- 
-
-## Checklist
-
-- [ ] PR is linked to the issue.
-- [ ] Diff is scoped to the issue.
-- [ ] Tests were added or updated when behavior changed.
-- [ ] Documentation was updated when behavior changed.
-- [ ] No secrets or credentials are included.
-- [ ] No unrelated formatting-only diff is included.
-- [ ] CODEOWNERS review is requested when protected areas changed.
-```
-
-## Do not
-
-- Do not hide failing tests.
-- Do not claim validation ran if it did not.
-- Do not mark high-risk findings as minor.
+Validate the filled body with `python3 scripts/validate-pr-body.py --body FILE`.
+Metadata-only edits do not require re-reviewing unchanged code.
+Required CI/human review stay mandatory. Report a missing approval, do not
+bypass it or use another project's reviewer credentials.

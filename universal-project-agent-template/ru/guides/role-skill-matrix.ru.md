@@ -1,23 +1,20 @@
-# Матрица ролей и skills
+# Роли и skills
 
-Роль — это ответственность и ожидаемый результат. Skill — это повторяемая процедура. Не нужно создавать отдельный skill для каждой роли.
+Роль — ответственность, а не обязательный отдельный агент.
 
-| Роль | Назначение | Может писать код? | Skills |
-|---|---|---:|---|
-| Lead / Orchestrator | выбрать роли, skills, MCP, risk level и последовательность | нет по умолчанию | capability-router, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
-| Delivery Planner / Backlog Architect | декомпозиция требований, backlog, GitHub Issues/Projects planning metadata | код нет; planning metadata да | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan, mcp-usage-guard |
-| Implementer | менять код как единственный write-owner | да | refactoring-plan, implementation-plan, pr-handoff |
-| Reviewer | read-only review diff/PR и refactoring boundaries | нет | capability-router, refactoring-plan, test-gap-review, pr-handoff |
-| Tester / QA | тесты, edge cases, bug reproduction | нет | capability-router, issue-agent-readiness, test-gap-review |
-| Security Reviewer | auth, secrets, infra, CI, sensitive data | нет | capability-router, security-review, mcp-usage-guard |
-| Docs / Terminology | документация, термины, требования | только docs | capability-router, source-index-builder, terminology-map-builder, documentation-sync |
+| Роль | Назначение | Запись |
+|---|---|---|
+| Lead / Implementer | Реализовать одну задачу и подготовить handoff | Один владелец worktree |
+| Batch Lead | Волны, checkpoint и интеграция одного батча | Может писать как назначенный owner |
+| Program Orchestrator | Зависимости и merge нескольких батчей | Общий статус, не файлы Lead |
+| Reviewer / QA | Независимые проверки и findings | Read-only |
+| Security Reviewer | Изменившаяся чувствительная граница | Read-only |
+| Docs / Terminology | Канон и производные документы | Только при назначении owner |
 
-`refactoring-plan` не меняет код. Он решает `approved-in-scope`, `needs-separate-issue`, `blocked` или `fold-into-current-task`, фиксирует invariants, allowed/forbidden changes и validation.
+Skills выбираются из registry по задаче; обязательной цепочки нет. Сложность и
+неопределённость определяют модель исполнения, риск — нужное ревью и полномочия.
+Модель и инструмент не дают разрешения.
 
-Главное правило:
-
-```text
-Одна worktree = один write-owner.
-Параллельное мышление — через роли.
-Параллельное изменение кода — через разные worktree.
-```
+Два независимых изменения можно выполнять двумя авторами в разных worktree.
+Для одной последовательной поверхности оставьте одного автора. Ревью содержит
+exact SHA и проверяемые findings, но не заменяет human/CODEOWNERS approval.

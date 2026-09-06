@@ -1,66 +1,47 @@
 # Template Agentic Project
 
-Short description:
+A reusable, stack-independent kit for scoped agent development: task contracts,
+skills, worktree helpers, PR handoff and small validation workflows.
 
-```text
-<Describe what this project does in one or two sentences.>
-```
+Start with [AGENTS.md](AGENTS.md) and [START_HERE](docs/START_HERE.md).
+The current task and delivery status live in GitHub Issues/Projects.
 
-## Current Status
+## Maintaining the template
 
-```text
-<New project | Existing project migration | Active delivery | Maintenance>
-```
-
-## Source of Truth
-
-- Requirements: GitHub Issues
-- Delivery status: GitHub Project
-- Architecture and terminology: `docs/`
-- Agent rules: `AGENTS.md`
-- Code changes: Pull Requests
-
-## Local Setup
-
-Replace this section with project-specific setup commands.
+Canonical distributable sources are under
+[universal-project-agent-template](universal-project-agent-template/README.md).
+Edit those sources, then run:
 
 ```bash
-make setup-ci
-```
-
-## Validation
-
-These commands define the minimum quality contract for pull requests:
-
-```bash
+python3 scripts/sync-template-mirrors.py
 make lint
 make typecheck
 make test
 ```
 
-The generic template Makefile fails until these commands are configured for this project.
+The root is an example installation. The mirror command preserves its project
+identity and excludes user `.codex/config.toml`, secrets, CODEOWNERS and the
+repository-specific Makefile. New package files must be staged before
+`make package`; `make package-check` verifies the distributable archive.
 
-## Working With Agents
+Python 3.10+, Bash and Git are required for kit checks. There are no third-party
+Python dependencies. Application validation in an installed project must be
+configured explicitly; kit checks are not application acceptance.
 
-Before assigning work to Codex or another coding agent:
+## Working on tasks
 
-1. Create a GitHub Issue.
-2. Fill objective, context, allowed scope, forbidden scope, acceptance criteria, and validation commands.
-3. Mark the issue `agent-ready` only after the task is sufficiently scoped.
-4. Use one branch and one worktree per issue.
-5. Require PR validation and human review before merge.
+Use one scoped issue and an isolated worktree. On WSL prefer a path under the
+Linux home filesystem. The start helper preserves dirty main and supports
+`AGENT_WORKTREE_ROOT`. Record the full checkpoint and next action in the issue.
 
-## Documentation
+Select configured docs checks or named local tests; GitHub CI remains the final
+required check. A single approved batch may use one rollup PR.
+Use the canonical PR template and retain human review before merge.
 
-Read in this order:
+## Distribution and historical material
 
-1. `docs/00-source-index.md`
-2. `docs/01-project-brief.md`
-3. `docs/02-terminology-map.md`
-4. `docs/03-scope-and-requirements.md`
-5. `docs/04-processes-and-user-journeys.md`
-6. `docs/05-architecture-and-data.md`
-7. `docs/06-quality-security-constraints.md`
-8. `docs/07-delivery-model.md`
-9. `docs/08-customer-facing-summary.md`
-
+Use `universal-project-agent-template/` or its rebuilt ZIP for new installations.
+The old `codex-new-project-agent-kit-with-skills-guide.zip`, top-level Skills
+appendix, onboarding notes and older Russian companion guides are historical
+background. Current English
+AGENTS.md, skills and delivery docs take precedence.

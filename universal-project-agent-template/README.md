@@ -4,7 +4,10 @@ Canonical language: English. Russian companion documents live in `ru/`.
 
 This template adds a practical agent-ready delivery layer to a new or existing repository. It is intentionally stack-independent: it defines the operating contract, documentation baseline, GitHub workflow, skills, MCP policy, and worktree helpers without choosing Node, Python, Go, Docker, or any other application stack.
 
-Primary operating model: the human operator talks to one Lead / Orchestrator agent in VS Code. The Orchestrator runs CLI subagents, collects their reports, requests fixes, performs re-review loops, and asks the human only for final merge, high-risk approval, missing business decisions, or unsafe operations.
+Start with the task and AGENTS.md. One Lead may implement a bounded task.
+Use subagents for independent work, separate worktrees for parallel code, and
+program coordination only for multiple related batches. Reuse approved
+handoffs and review unchanged code again only when new evidence warrants it.
 
 ## What This Template Provides
 
@@ -96,7 +99,8 @@ After installation:
 2. Configure exact validation commands in `Makefile`.
 3. Use `capability-router` to choose roles, skills, risk, and optional MCP for non-trivial work.
 4. Create the first scoped GitHub Issue before asking an agent to implement code.
-5. Use the Orchestrator Console Workflow for autonomous subagent coordination.
+5. Use one Lead for a bounded task; add independent agents or program
+   coordination only when the work can advance in parallel.
 
 ## Existing Project
 
@@ -122,6 +126,11 @@ Then apply without overwriting existing files:
 
 If a file already exists, it is reported as a conflict and left untouched unless `--overwrite` is explicitly passed.
 
+Symlink destinations are rejected, including with `--overwrite`. Executable
+permissions are applied only to copied scripts. Installer conflicts are reported;
+installation is not transactional, so review the report before using a mixed
+existing/new installation.
+
 ## MCP Safety
 
 MCP servers are disabled by default. Enable them only after the repository is trusted and credentials are configured. The MCP module contains a policy document and a project-scoped `.codex/config.toml`.
@@ -141,6 +150,21 @@ make test-fast
 ```
 
 This avoids false green checks in a generic template.
+
+Kit structure can be checked with `make validate-kit` or `make validate-docs`.
+These commands require Python 3.10+ and do not imply application tests passed.
+For code use configured `make local-validate TARGETED_TESTS="..."`; a full local
+suite is a diagnostic option. CI and human review remain required.
+
+The PR template is the only body source. Fill it with actual evidence, then use
+`scripts/agent-finish.sh ISSUE --body-file FILE --validation docs|targeted|full`
+when that GitHub lifecycle is authorized.
+
+The source repository derives its root mirrors with
+`python3 scripts/sync-template-mirrors.py`. Stage new package files, then run
+`make package` to rebuild the ZIP and `make package-check` to detect drift.
+Do not copy a source project's credentials, approvals, business rules or CI
+infrastructure into a consuming project.
 
 ## Human Decision Requests
 

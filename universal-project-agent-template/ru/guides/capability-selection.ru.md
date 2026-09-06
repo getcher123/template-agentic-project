@@ -1,34 +1,25 @@
-# Подбор capabilities
+# Выбор возможностей
 
-Перед нетривиальной задачей сначала выбери минимальный набор возможностей:
+Начните с задачи и `AGENTS.md`. Определите отдельно:
 
-```text
-тип задачи -> роли -> skills -> optional MCP -> escalation
-```
+- уровень: task, batch или program;
+- сложность C1–C4;
+- риск R1–R4;
+- неопределённость U0–U2;
+- режим: read-only, local-write или external-write.
 
-## Минимальный starter MCP
+Для механической ограниченной работы подходит стандартная модель; сложная
+семантика и архитектура требуют более сильного рассуждения. Сам риск не требует
+дорогого implementer, но определяет review и approval.
 
-- GitHub MCP: только если локального контекста issue, PR, Actions или repo недостаточно.
-- Context7 MCP: только если нужны актуальные docs библиотеки или фреймворка.
+| Работа | Минимальный процесс |
+|---|---|
+| Небольшой docs/fix | Один Implementer и затронутые проверки |
+| Продолжение батча | Проверить изменившиеся SHA/scope/authority |
+| Независимые изменения | Разные worktree и integration owner |
+| Несколько связанных батчей | Program Orchestrator |
+| U2 — нет решения владельца | Зафиксировать gap; блокировать его dependants |
+| Sensitive boundary | Предметное review и правила целевого проекта |
 
-Другие MCP не входят в стартовый набор. Browser/Playwright можно рассмотреть позже как отдельное UI-расширение, но он не настраивается по умолчанию.
-
-## Быстрая матрица
-
-| Тип задачи | Роли | Skills | MCP |
-|---|---|---|---|
-| Новый проект | Lead / Orchestrator, Delivery Planner / Backlog Architect, Docs / Terminology | capability-router, source-index-builder, terminology-map-builder, requirement-slicing | none |
-| Адаптация проекта | Lead / Orchestrator, Delivery Planner / Backlog Architect, Docs / Terminology, Reviewer | capability-router, source-index-builder, terminology-map-builder, documentation-sync, requirement-slicing | GitHub MCP при нехватке issue/PR контекста |
-| Декомпозиция backlog | Delivery Planner / Backlog Architect, Docs / Terminology, Lead / Orchestrator | capability-router, requirement-slicing, issue-agent-readiness, orchestration-plan | GitHub MCP для Issues/Projects |
-| GitHub planning layer | Delivery Planner / Backlog Architect, Lead / Orchestrator | capability-router, issue-agent-readiness, mcp-usage-guard, orchestration-plan | GitHub MCP для Issues, Projects, labels, Actions |
-| Feature | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | Context7 при необходимости |
-| Bugfix | Lead / Orchestrator, Implementer, Tester / QA | capability-router, issue-agent-readiness, implementation-plan, test-gap-review, pr-handoff | GitHub MCP при необходимости |
-| Refactor | Lead / Orchestrator, Implementer, Reviewer | capability-router, orchestration-plan, refactoring-plan, implementation-plan, test-gap-review, pr-handoff | none by default |
-| Review | Reviewer, Tester / QA | capability-router, test-gap-review, pr-handoff | GitHub MCP для PR/CI |
-| Security-sensitive | Lead / Orchestrator, Security Reviewer, Reviewer | capability-router, security-review, mcp-usage-guard, test-gap-review | GitHub MCP read-only при необходимости |
-
-## Refactoring Gate
-
-Используй `refactoring-plan` до изменения кода, если есть повтор logic в 3+ местах, модуль мешает тестированию, нужно extraction/isolation для тестов, границы ответственности размыты, повторяется bug pattern, файл fragile/high-churn или naming конфликтует с terminology map.
-
-Не одобряй refactor только ради cosmetic cleanup, broad cleanup внутри feature/bug issue, public API/schema/migration/auth/infra/security changes без explicit approval, без tests/characterization path или ради unrelated formatting churn.
+Внешние инструменты используйте, когда локальных данных недостаточно.
+Перед записью проверьте целевой system/repository, actor, операции и пределы.

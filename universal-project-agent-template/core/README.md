@@ -38,7 +38,11 @@ make typecheck
 make test
 ```
 
-The generic template Makefile fails until these commands are configured for this project.
+The generic application targets fail until configured for this project. Select
+local checks for the actual diff: `make validate-docs` for kit documents, or
+`make local-validate TARGETED_TESTS="..."` after configuring the project's
+named-test runner. Required CI remains authoritative. Kit checks require
+Python 3.10+ and do not prove application correctness.
 
 ## Working With Agents
 
@@ -52,7 +56,8 @@ Before assigning work to Codex or another coding agent:
 
 ## Documentation
 
-Read in this order:
+Use [START_HERE](docs/START_HERE.md) to find only the documents relevant to the task.
+The following documents are available; they are not a mandatory reading order:
 
 1. `docs/00-source-index.md`
 2. `docs/01-project-brief.md`
@@ -63,4 +68,3 @@ Read in this order:
 7. `docs/06-quality-security-constraints.md`
 8. `docs/07-delivery-model.md`
 9. `docs/08-customer-facing-summary.md`
-

@@ -1,108 +1,29 @@
 ---
 name: capability-router
-description: Use at the start of a non-trivial task to choose the required roles, skills, optional MCP access, risk level, missing information, and escalation path. This skill routes work; it does not execute the task.
+description: Route non-trivial tasks to the smallest sufficient workflow, model tier, skills and scoped authority. Do not execute or replan an already approved task.
 ---
 
 # Capability Router
 
-## Purpose
+Start from the task and already-loaded AGENTS.md. Use docs/START_HERE.md only
+to locate missing sources. Do not require a documentation tour.
 
-Select the smallest sufficient capability set for a task:
+Classify independently:
+- Level: task (one change), batch (one resumable package), program (multiple
+  related Leads/batches sharing dependencies/merge order).
+- Complexity: C1 mechanical, C2 bounded, C3 cross-layer/semantic, C4 architectural.
+- Risk: R1 low, R2 medium, R3 protected, R4 destructive/production.
+- Uncertainty: U0 decision-complete, U1 discoverable locally, U2 owner/source needed.
+- Mode: read-only, local-write, external-write. Mode does not itself set risk.
 
-```text
-task type -> required roles -> required skills -> optional MCP -> escalation decision
-```
+Use a standard tier for C1/C2 U0; stronger reasoning for C3/C4 or material U1.
+Risk requires the appropriate review/authority, not automatically a costly
+implementer. Never pin a vendor model name as permanent policy.
 
-This skill keeps the starter workflow lean. Roles define responsibility. Skills define repeatable procedures. MCP provides external tool access only when local context is insufficient.
+One bounded task: one implementer (possibly the Lead). Add subagents only for
+independent useful outputs. Use program-orchestrator only for related batches.
+U2 blocks only dependent implementation; capture the missing decision.
 
-## Inputs
-
-- Task or GitHub Issue text.
-- Acceptance criteria, if available.
-- Allowed and forbidden scope, if available.
-- Known risk areas.
-- Current repository documentation and `AGENTS.md`.
-- Current diff or PR context, if routing a review task.
-
-## Procedure
-
-1. Classify the task type:
-   - planning/backlog;
-   - github-planning-layer;
-   - documentation/setup;
-   - feature;
-   - bugfix;
-   - refactor;
-   - review;
-   - test/QA;
-   - security-sensitive;
-   - CI/MCP/external context.
-2. Choose required roles from the starter set:
-   - Lead / Orchestrator;
-   - Delivery Planner / Backlog Architect;
-   - Implementer;
-   - Reviewer;
-   - Tester / QA;
-   - Security Reviewer;
-   - Docs / Terminology.
-3. Choose required skills from the registry.
-4. Decide whether MCP is needed:
-   - GitHub MCP for issue, PR, Actions, or repository context unavailable locally.
-   - Context7 MCP for current library/framework docs unavailable locally.
-   - No MCP when local repo/docs are sufficient.
-5. Identify missing information and blockers.
-6. Decide whether human escalation is required.
-
-## Output Format
-
-```md
-## Capability Routing
-
-### Task type
-
-<one of: planning/backlog | github-planning-layer | documentation/setup | feature | bugfix | refactor | review | test/QA | security-sensitive | CI/MCP/external context>
-
-### Risk level
-
-low | medium | high | critical
-
-### Required roles
-
-<choose from: Lead / Orchestrator | Delivery Planner / Backlog Architect | Implementer | Reviewer | Tester / QA | Security Reviewer | Docs / Terminology>
-
--
-
-### Required skills
-
--
-
-### Optional MCP
-
-- MCP needed: yes | no
-- MCP server: GitHub MCP | Context7 MCP | none
-- Reason:
-- Mode: read-only | write-capable
-
-### Missing information
-
--
-
-### Escalation
-
-- Human escalation required: yes | no
-- Reason:
-
-### Recommended next step
-
-<the next safe action>
-```
-
-## Do Not
-
-- Do not implement the task.
-- Do not edit files.
-- Do not enable MCP.
-- Do not perform MCP write actions.
-- Do not approve the task or PR.
-- Do not add new roles, skills, or MCP servers.
-- Do not expand scope beyond the linked issue or task.
+Output: level, C/R/U/mode, tier rationale, owner, selected skills, authority,
+missing fields and next action. Reuse an approved contract; report only deltas.
+Routing never authorizes external actions or broadens scope.
