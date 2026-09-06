@@ -1,48 +1,31 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
-
-if [ "$#" -lt 2 ]; then
-  echo "Usage: ./scripts/agent-start.sh ISSUE_NUMBER SLUG [BASE_BRANCH]"
-  echo "Example: ./scripts/agent-start.sh 42 user-deactivation main"
-  exit 1
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
+  echo "Usage: agent-start.sh ISSUE_NUMBER SLUG [BASE_BRANCH]" >&2
+  exit 2
 fi
-
 ISSUE_NUMBER="$1"
 SLUG="$2"
 BASE_BRANCH="${3:-main}"
-
-CURRENT_ROOT="$(git rev-parse --show-toplevel)"
-UMBRELLA_DIR="$(cd "$CURRENT_ROOT/.." && pwd)"
+[[ "$ISSUE_NUMBER" =~ ^[1-9][0-9]*$ ]] || { echo "Invalid issue number" >&2; exit 2; }
+[[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid slug" >&2; exit 2; }
+git check-ref-format "refs/heads/$BASE_BRANCH" >/dev/null
+ROOT="$(git rev-parse --show-toplevel)"
 BRANCH="agent/issue-${ISSUE_NUMBER}-${SLUG}"
-WORKTREE_DIR="${UMBRELLA_DIR}/wt-issue-${ISSUE_NUMBER}-${SLUG}"
-
-cd "$CURRENT_ROOT"
-
-echo "Fetching origin..."
-git fetch origin
-
-echo "Checking out ${BASE_BRANCH}..."
-git checkout "$BASE_BRANCH"
-git pull --ff-only origin "$BASE_BRANCH"
-
-if git show-ref --verify --quiet "refs/heads/${BRANCH}"; then
-  echo "Local branch already exists: ${BRANCH}"
+# Explicit override works on any OS; WSL defaults to the Linux home filesystem.
+PARENT="${AGENT_WORKTREE_ROOT:-$HOME/agent-worktrees/$(basename "$ROOT")}"
+mkdir -p "$PARENT"
+PARENT="$(cd "$PARENT" && pwd)"
+WORKTREE_DIR="$PARENT/wt-issue-${ISSUE_NUMBER}-${SLUG}"
+if git -C "$ROOT" show-ref --verify --quiet "refs/heads/$BRANCH" || [ -e "$WORKTREE_DIR" ]; then
+  echo "Branch or worktree already exists; resume it explicitly." >&2
   exit 1
 fi
-
-if [ -d "$WORKTREE_DIR" ]; then
-  echo "Worktree directory already exists: ${WORKTREE_DIR}"
-  exit 1
-fi
-
-echo "Creating worktree: ${WORKTREE_DIR}"
-git worktree add "$WORKTREE_DIR" -b "$BRANCH" "$BASE_BRANCH"
-
-echo "Worktree created."
-echo "Branch: ${BRANCH}"
-echo "Path: ${WORKTREE_DIR}"
-echo "Next commands:"
-echo "  cd ${WORKTREE_DIR}"
-echo "  code ."
-echo "  codex"
-
+git -C "$ROOT" fetch origin "$BASE_BRANCH"
+BASE_SHA="$(git -C "$ROOT" rev-parse FETCH_HEAD)"
+git -C "$ROOT" worktree add "$WORKTREE_DIR" -b "$BRANCH" "$BASE_SHA"
+echo "Branch: $BRANCH"
+echo "Path: $WORKTREE_DIR"
+echo "Baseline: $BASE_SHA"
+echo "Skills: $WORKTREE_DIR/.agents/skills"
+echo "Start a NEW session: codex -C '$WORKTREE_DIR'"

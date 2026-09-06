@@ -1,68 +1,38 @@
 # Универсальный агентный шаблон проекта
 
-Основной язык шаблона — English. Эта папка содержит русские версии ключевых документов для команды.
+Основной канон шаблона ведётся на английском. Этот каталог — краткая русская
+справка; при расхождении используйте английские `AGENTS.md`, skills и delivery docs.
 
-Шаблон добавляет в новый или существующий репозиторий операционный слой для Codex-native разработки:
+Начинайте с задачи и `AGENTS.md`. Ограниченную последовательную задачу может
+выполнить один Lead/Implementer. Для независимых изменений используйте разные
+worktree и одного владельца записи в каждой. Program Orchestrator нужен только
+нескольким связанным батчам с общими зависимостями или порядком merge.
 
-```text
-GitHub Issue
--> GitHub Project Ready
--> Lead / Orchestrator в VS Code
--> CLI subagents при необходимости
--> отдельная branch
--> отдельная git worktree
--> Codex discovery
--> scoped implementation
--> local validation
--> Pull Request
--> CI
--> human review
--> merge
--> cleanup
-```
+Одобренный issue/handoff хранит цель, критерии, scope, полный checkpoint,
+владельца, проверки, полномочия и следующий шаг. При продолжении проверяйте
+изменившиеся факты; не составляйте тот же план заново.
 
-## Профили установки
+Профили установки:
 
-| Профиль | Что ставит |
+| Профиль | Состав |
 |---|---|
-| `core` | `AGENTS.md`, README-шаблон, docs baseline, issue/PR templates, Makefile contract |
-| `recommended` | `core` + capability-router, skills, roles, disabled MCP config, worktree scripts |
-| `full` | `recommended` + CODEOWNERS, GitHub workflows, labels helper, Project setup guide |
-
-## Новый проект
+| core | AGENTS.md, README, базовые docs и issue/PR templates |
+| recommended | core, skills, отключённые MCP и worktree helpers |
+| full | recommended, CODEOWNERS и GitHub workflows |
 
 ```bash
-/path/to/universal-project-agent-template/install.sh \
-  --target . \
-  --mode new \
-  --profile recommended \
-  --apply
+universal-project-agent-template/install.sh \
+  --target /path/to/project --mode existing --profile recommended --dry-run
 ```
 
-## Существующий проект
+Установщик не перезаписывает конфликты без `--overwrite` и запрещает пути
+через символические ссылки. После установки настройте прикладные команды
+Makefile. Проверки шаблона не считаются тестами приложения.
 
-Сначала dry-run:
+Локально запускайте проверки затронутых частей. Итоговый CI и человеческое
+ревью проекта остаются обязательными. Повторять ревью неизменившегося commit
+следует только при новых фактах.
 
-```bash
-/path/to/universal-project-agent-template/install.sh \
-  --target /path/to/repo \
-  --mode existing \
-  --profile core \
-  --dry-run
-```
-
-Потом apply:
-
-```bash
-/path/to/universal-project-agent-template/install.sh \
-  --target /path/to/repo \
-  --mode existing \
-  --profile core \
-  --apply
-```
-
-Без `--overwrite` существующие файлы не перетираются.
-
-Минимальный MCP starter: только GitHub MCP и Context7 MCP. Browser automation можно добавить позже отдельным UI-расширением, если UI smoke-тесты станут регулярным процессом.
-
-Основная схема работы: человек общается только с Lead / Orchestrator агентом в VS Code. Orchestrator сам запускает CLI-субагентов, принимает отчёты, просит исправления и выводит человеку краткий финальный запрос решения для merge или high-risk approval.
+GitHub MCP включается только с явно выбранными для целевого проекта токеном,
+actor и owner/repository. Скрипт проверяет их перед запуском и не использует
+автоматически текущую ambient-идентичность `gh`.

@@ -5,18 +5,6 @@ Closes #
 ## Summary
 
 -
--
--
-
-## Type Of Change
-
-- [ ] Feature
-- [ ] Bug fix
-- [ ] Refactor
-- [ ] Tests
-- [ ] Docs
-- [ ] Infrastructure
-- [ ] Security-sensitive change
 
 ## Scope
 
@@ -30,78 +18,42 @@ Intentionally not touched:
 
 ## Validation
 
-Commands run:
+Commands run and actual results:
 
-```bash
-make lint
-make typecheck
-make test
-```
+-
 
-Results:
+Commands not run, reasons and residual risk:
 
-- [ ] Lint passed
-- [ ] Typecheck passed
-- [ ] Tests passed
-- [ ] CI passed
+-
 
-Commands not run and reason:
+Required CI for exact SHA:
 
 -
 
 ## Agent Handoff Report
 
-Implementation notes:
+Checkpoint SHA, write-owner, roles/skills, external actions and reviewer verdicts:
 
 -
 
-Files changed:
+## Human Review Focus
 
 -
 
-Risk areas:
-
--
-
-Human review focus:
-
--
-
-Rollback notes:
+## Rollback Notes
 
 -
 
 ## Decision Request
 
-Context:
-
--
-
-Agent review result:
-
--
-
-Remaining risks:
-
--
-
-Recommended action:
-
-- [ ] Approve merge
-- [ ] Approve high-risk action
-- [ ] Request changes
-- [ ] Block
-
-Why:
+Recommended action, remaining risks and the human decision required:
 
 -
 
 ## Checklist
 
-- [ ] PR is linked to the issue.
-- [ ] Diff is scoped to the issue.
-- [ ] Tests were added or updated when behavior changed.
-- [ ] Documentation was updated when behavior changed.
-- [ ] No secrets or credentials are included.
-- [ ] No unrelated formatting-only diff is included.
-- [ ] CODEOWNERS review is requested when protected areas changed.
+- [ ] Linked issue and scope are accurate.
+- [ ] Behavior and error cases have appropriate tests.
+- [ ] Validation and unrun checks are reported honestly.
+- [ ] Required human/CODEOWNERS review is requested; no approval is implied.
+- [ ] No secrets or unrelated changes are included.

@@ -1,104 +1,21 @@
 ---
 name: issue-agent-readiness
-description: Use before assigning a GitHub Issue to Codex. Determines whether an issue is agent-ready, needs human input, needs decomposition, or is not suitable for agent implementation.
+description: Assess whether a task contract has sufficient scope, acceptance, ownership, validation and authority for implementation or delegation.
 ---
 
 # Issue Agent Readiness
 
-## Purpose
+Read the linked issue/handoff first. Use only the relevant canon for unresolved
+terms or behavior; do not reread architecture for a docs-only task.
 
-Decide whether a task can be safely delegated to Codex within the current multiagent workflow.
+Required contract: objective, source/context, observable acceptance, allowed and
+forbidden scope, checkpoint/base, one write-owner, validation, authority/limits
+and next action. A truthful U1 discovery step may proceed; U2 waits for its owner.
+An external decision for one branch does not block unrelated local work.
 
-## Inputs
+Reuse existing approvals only within their recorded system, environment,
+operations, limits and expiry. Readiness is not a new permission or merge approval.
 
-Read:
-
-1. The GitHub Issue.
-2. `AGENTS.md`.
-3. `docs/02-terminology-map.md`.
-4. `docs/03-scope-and-requirements.md`.
-5. `docs/05-architecture-and-data.md`, if relevant.
-6. Current branch/worktree state, if already created.
-
-## Checklist
-
-An issue is `agent-ready` only if all are true:
-
-- Objective is clear.
-- Acceptance criteria are concrete and testable.
-- Allowed scope is listed.
-- Forbidden scope is listed.
-- Validation commands are listed.
-- Risk level is known.
-- No secret access is required.
-- No production access is required.
-- Task fits in one PR.
-- Terminology matches `docs/02-terminology-map.md`.
-- Human approval requirements are clear.
-
-## Output format
-
-```md
-## Agent readiness
-
-Status: agent-ready | needs-human-input | needs-decomposition | not-agent-suitable
-
-## Reasoning summary
-
-- 
-
-## Missing information
-
-- 
-
-## Risk classification
-
-Risk: low | medium | high | critical
-Reason:
-
-## Required roles
-
-- Lead / Orchestrator:
-- Delivery Planner / Backlog Architect:
-- Implementer:
-- Reviewer:
-- Tester / QA:
-- Security Reviewer:
-- Docs / Terminology:
-
-## Required skills
-
-- 
-
-## Recommended labels
-
-- 
-
-## Recommended project status
-
-- 
-
-## Suggested issue improvements
-
-- 
-```
-
-## Escalation
-
-Mark as requiring human review if the issue touches:
-
-- auth;
-- billing;
-- database migrations;
-- infrastructure;
-- CI/CD;
-- security-sensitive behavior;
-- secrets;
-- production config;
-- legal/compliance constraints.
-
-## Do not
-
-- Do not mark a vague issue as agent-ready.
-- Do not assume missing acceptance criteria.
-- Do not allow implementation without validation commands.
+Return ready / needs-input / needs-decomposition / unsuitable, with only missing
+fields, affected dependencies and next action. Do not rerun readiness on every
+tool call; revisit changed checkpoint/scope/authority or a new concrete blocker.

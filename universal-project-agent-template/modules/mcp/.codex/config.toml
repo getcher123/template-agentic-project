@@ -8,23 +8,13 @@ approval_policy = "on-request"
 network_access = false
 
 # GitHub MCP: Issues, PRs, repository context, Actions, and code security context.
-# Before enabling, run:
-#   export GITHUB_PERSONAL_ACCESS_TOKEN="$(gh auth token)"
-# The toolsets are intentionally limited to project delivery needs.
+# Before enabling, explicitly select a target-project token, actor and
+# owner/repository. scripts/run-github-mcp.sh verifies them before Docker starts.
 [mcp_servers.github]
-command = "docker"
-args = [
-  "run",
-  "-i",
-  "--rm",
-  "-e",
-  "GITHUB_PERSONAL_ACCESS_TOKEN",
-  "-e",
-  "GITHUB_TOOLSETS",
-  "ghcr.io/github/github-mcp-server"
-]
+command = "bash"
+args = ["scripts/run-github-mcp.sh"]
 env = { GITHUB_TOOLSETS = "context,repos,issues,pull_requests,actions,code_security" }
-env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
+env_vars = ["AGENT_GITHUB_TOKEN", "AGENT_GITHUB_ACTOR", "AGENT_GITHUB_REPOSITORY"]
 startup_timeout_sec = 20
 tool_timeout_sec = 90
 enabled = false

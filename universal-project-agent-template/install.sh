@@ -79,18 +79,65 @@ case "$ACTION" in
   *) echo "Invalid action: $ACTION" >&2; exit 2 ;;
 esac
 
-if [ "$ACTION" = "apply" ]; then
-  TARGET="$(mkdir -p "$TARGET" && cd "$TARGET" && pwd)"
-else
-  if [ -d "$TARGET" ]; then
-    TARGET="$(cd "$TARGET" && pwd)"
-  else
-    TARGET_PARENT="$(dirname "$TARGET")"
-    TARGET_BASENAME="$(basename "$TARGET")"
-    if [ -d "$TARGET_PARENT" ]; then
-      TARGET="$(cd "$TARGET_PARENT" && pwd)/$TARGET_BASENAME"
-    fi
+absolute_lexical_path() {
+  local input="$1"
+  local part
+  local last_index
+  local -a source_parts=()
+  local -a clean_parts=()
+  if [[ "$input" != /* ]]; then
+    input="$PWD/$input"
   fi
+  IFS='/' read -r -a source_parts <<< "$input"
+  for part in "${source_parts[@]}"; do
+    case "$part" in
+      ''|.) ;;
+      ..)
+        if [ "${#clean_parts[@]}" -gt 0 ]; then
+          last_index=$((${#clean_parts[@]} - 1))
+          unset "clean_parts[$last_index]"
+        fi
+        ;;
+      *) clean_parts+=("$part") ;;
+    esac
+  done
+  if [ "${#clean_parts[@]}" -eq 0 ]; then
+    printf '/\n'
+  else
+    local joined
+    printf -v joined '/%s' "${clean_parts[@]}"
+    printf '%s\n' "$joined"
+  fi
+}
+
+reject_symlink_path() {
+  local candidate="$1"
+  local part
+  local cursor=""
+  local -a parts=()
+  IFS='/' read -r -a parts <<< "$candidate"
+  for part in "${parts[@]}"; do
+    [ -n "$part" ] || continue
+    cursor="$cursor/$part"
+    if [ -L "$cursor" ]; then
+      echo "Refusing target with symlink component: $cursor" >&2
+      exit 1
+    fi
+  done
+}
+
+TARGET="$(absolute_lexical_path "$TARGET")"
+[ "$TARGET" != "/" ] || { echo "Refusing filesystem root as target" >&2; exit 1; }
+reject_symlink_path "$TARGET"
+if [ "$ACTION" = "apply" ]; then
+  mkdir -p "$TARGET"
+  reject_symlink_path "$TARGET"
+  TARGET="$(cd -P "$TARGET" && pwd)"
+else
+  [ ! -e "$TARGET" ] || [ -d "$TARGET" ] || {
+    echo "Target exists and is not a directory: $TARGET" >&2
+    exit 1
+  }
 fi
 
 declare -a CONFLICTS=()
@@ -102,6 +149,19 @@ copy_file() {
   local rel="$2"
   local dest="${TARGET}/${rel}"
 
+  # Existing symlink components are not install destinations, even with overwrite.
+  local cursor="$dest"
+  while [ "$cursor" != "$TARGET" ]; do
+    if [ -L "$cursor" ]; then
+      echo "Refusing symlink destination: $rel" >&2
+      exit 1
+    fi
+    cursor="$(dirname "$cursor")"
+  done
+  if [ -e "$dest" ] && [ ! -f "$dest" ]; then
+    echo "Refusing non-file destination: $rel" >&2
+    exit 1
+  fi
   if [ -e "$dest" ] && [ "$OVERWRITE" != "true" ]; then
     CONFLICTS+=("$rel")
     return 0
@@ -114,6 +174,9 @@ copy_file() {
 
   mkdir -p "$(dirname "$dest")"
   cp "$src" "$dest"
+  if [[ "$rel" == scripts/*.sh ]]; then
+    chmod +x "$dest"
+  fi
   COPIED+=("$rel")
 }
 
@@ -159,10 +222,6 @@ case "$PROFILE" in
   recommended) install_recommended ;;
   full) install_full ;;
 esac
-
-if [ "$ACTION" = "apply" ]; then
-  find "$TARGET/scripts" -maxdepth 1 -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true
-fi
 
 echo "Universal Project Agent Template"
 echo "Target:  $TARGET"

@@ -1,99 +1,25 @@
 ---
 name: orchestration-plan
-description: Use for medium, high-risk, multi-role, documentation-heavy, or architecture-heavy tasks to decide roles, skills, MCP usage, write-owner, execution sequence, and escalation rules before implementation.
+description: Plan dependency-safe waves for one multi-role batch; avoid duplicating an approved handoff or allocating agents without useful parallel work.
 ---
 
 # Orchestration Plan
 
-## Purpose
+Consume the approved issue/handoff (and Program Directive if present).
+Reference its task card; add only owners, independent work surfaces, dependencies,
+validation barriers and the next checkpoint.
 
-Create a controlled execution plan for a task before any code changes.
+For one sequential change use one implementer. For two independent changes and
+four available slots use a coordinator, two isolated implementers and one reserve.
+Roles are responsibilities; a Lead may also be the named implementer.
+Each worktree has one write-owner. Review/QA default read-only.
+Delegate concrete independent outputs, not whole-policy rereading or duplicate
+diagnosis. Do useful non-dependent work while a reviewer runs.
 
-## Inputs
+A wave ends with affected validation, full SHA, dirty-state disclosure and next
+action. One bounded rollup PR may contain multiple related fixes.
+Final exact-SHA reviews and required CI remain; no full gate per wave by default.
 
-Read:
-
-1. GitHub Issue.
-2. GitHub Project status, if available.
-3. `AGENTS.md`.
-4. `docs/skills-registry.md`.
-5. `docs/agent-roles.md`.
-6. `docs/mcp-registry.md`.
-7. Relevant project documentation.
-
-## Procedure
-
-1. Confirm agent readiness using `issue-agent-readiness`.
-2. Choose orchestration mode:
-   - `planning-and-backlog`
-   - `single-agent`
-   - `lead-plus-implementer`
-   - `lead-plus-reviewer`
-   - `lead-plus-qa`
-   - `specialist-review`
-   - `split-into-multiple-issues`
-3. Select roles.
-4. Select skills.
-5. Decide whether MCP is needed using `mcp-usage-guard`.
-6. Assign exactly one write-owner for a single worktree.
-7. Define read-only reviewers.
-8. Define validation commands.
-9. Define escalation triggers.
-10. Produce an execution sequence.
-
-## Output format
-
-```md
-## Orchestration plan
-
-Mode: planning-and-backlog | single-agent | lead-plus-implementer | lead-plus-reviewer | lead-plus-qa | specialist-review | split-into-multiple-issues
-
-## Selected roles
-
-| Role | Purpose | Write access | Skills |
-|---|---|---|---|
-| Orchestrator |  | no |  |
-| Implementer |  | yes |  |
-
-## MCP decision
-
-MCP needed: yes | no
-MCP servers:
-
-- github: reason
-- context7: reason
-
-## Write-owner
-
-- 
-
-## Read-only reviewers
-
-- 
-
-## Execution sequence
-
-1. 
-2. 
-3. 
-
-## Validation commands
-
-- make lint
-- make typecheck
-- make test
-
-## Escalation triggers
-
-- 
-
-## Handoff requirements
-
-- 
-```
-
-## Do not
-
-- Do not assign multiple code-writing agents to one worktree.
-- Do not use MCP write actions without surfacing the plan.
-- Do not expand scope beyond the issue.
+Multiple related batches use program-orchestrator for shared locks/merge order.
+Record an unavailable tool or external decision against only its dependants.
+Do not create another registry or expand authority.

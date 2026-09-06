@@ -1,5 +1,9 @@
 # Приложение A. Полный гайд по Skills для Codex New Project Agent Kit
 
+> **Исторический материал (2026-05-03).** Примеры в этом файле не являются
+> рабочими шаблонами. Используйте текущие `AGENTS.md`, `docs/skills-registry.md`,
+> `.agents/skills/` и `.github/pull_request_template.md`.
+
 Версия: 2026-05-03
 
 Этот документ является приложением к архиву `codex-new-project-agent-kit.zip` и описывает, как использовать, поддерживать и расширять набор skills для запуска нового проекта в рамках workflow:

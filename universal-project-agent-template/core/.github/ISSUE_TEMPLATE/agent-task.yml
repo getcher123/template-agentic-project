@@ -6,7 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this form for tasks that may be delegated to Codex. A task becomes agent-ready only when objective, scope, constraints, and validation are clear.
+        This issue is the reusable task contract. Resume it from the recorded
+        checkpoint instead of rebuilding the plan.
 
   - type: textarea
     id: objective
@@ -85,17 +86,24 @@ body:
       required: true
 
   - type: dropdown
-    id: orchestration-mode
+    id: delivery-level
     attributes:
-      label: Orchestration mode
+      label: Delivery level
       options:
-        - planning-and-backlog
-        - single-agent
-        - lead-plus-implementer
-        - lead-plus-reviewer
-        - lead-plus-qa
-        - specialist-review
-        - split-into-multiple-issues
+        - task — one bounded change
+        - batch — one resumable package or related fix group
+        - program — related batches with shared dependencies or merge order
+    validations:
+      required: true
+
+  - type: dropdown
+    id: uncertainty
+    attributes:
+      label: Uncertainty
+      options:
+        - U0 — decision complete
+        - U1 — repository discovery required
+        - U2 — owner or authoritative source required
     validations:
       required: true
 
@@ -116,10 +124,7 @@ body:
       label: Required skills
       description: Use capability-router to choose the smallest sufficient skill set.
       value: |
-        - capability-router
-        - issue-agent-readiness
-        - implementation-plan
-        - pr-handoff
+        - capability-router (when non-trivial routing is needed)
     validations:
       required: true
 
@@ -133,14 +138,36 @@ body:
       required: true
 
   - type: textarea
+    id: checkpoint
+    attributes:
+      label: Baseline and checkpoint
+      description: Full base SHA; later add the last validated commit, worktree and next action.
+      value: |
+        - Base SHA:
+        - Validated checkpoint:
+        - Worktree:
+        - Next action:
+    validations:
+      required: true
+
+  - type: textarea
+    id: authority
+    attributes:
+      label: External authority
+      description: State none, or name the system/environment, operations, limits, expiry and stop conditions.
+      value: |
+        - None. Repository-local work only.
+    validations:
+      required: true
+
+  - type: textarea
     id: validation
     attributes:
       label: Validation commands
       description: Commands that must pass before PR.
       value: |
-        make lint
-        make typecheck
-        make test
+        <configured docs check or named affected tests>
+        <required CI check>
     validations:
       required: true
 

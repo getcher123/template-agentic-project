@@ -1,77 +1,22 @@
 ---
 name: security-review
-description: Use for tasks touching auth, authorization, billing, database migrations, infrastructure, CI/CD, dependencies, secrets, logging, data exposure, or high-risk integrations. Prefer read-only review unless explicitly approved.
+description: Review changed trust boundaries such as permissions, CI execution, credentials, data exposure or persistence; not every mention of an integration.
 ---
 
 # Security Review
 
-## Purpose
+Read the exact diff/task and relevant constraints. Review the changed boundary
+or a review required by project policy, not the whole system by keyword.
+Check secret/data handling, execution authority, dependency/CI trust and negative
+cases relevant to this diff. Use synthetic fixtures; no production/network writes
+or credential inspection by default.
 
-Review security-sensitive risks before PR readiness.
+Findings need exact SHA, reproduction/evidence, impact and violated requirement.
+Preserve project severity/merge criteria; neither elevate every suggestion to a
+blocker nor downgrade a proved defect to accelerate delivery.
+Review deltas after changes; unchanged SHA requires no new review without evidence.
+Record unrelated hardening as follow-up. Escalate a repeated unresolved boundary
+decision rather than inventing an unlimited sequence of hypothetical attacks.
 
-## Inputs
-
-Read:
-
-1. GitHub Issue.
-2. Current diff.
-3. `AGENTS.md`.
-4. `docs/06-quality-security-constraints.md`, if present.
-5. Auth, permission, logging, dependency, infra, and CI-related files touched by the diff.
-
-## Procedure
-
-Check:
-
-1. Secrets are not committed.
-2. Tokens, cookies, private keys, or credentials are not logged.
-3. Auth checks are not weakened.
-4. Authorization is enforced at the correct layer.
-5. Role checks are tested.
-6. Customer or personal data is not exposed.
-7. New dependencies are justified.
-8. CI/CD changes do not increase supply-chain risk.
-9. Database migrations preserve data and include rollback notes when relevant.
-10. Infrastructure changes require human review.
-
-## Output format
-
-```md
-## Security review
-
-Status: pass | needs-fix | requires-human-review
-
-## Findings
-
-| Severity | Area | Finding | Recommendation |
-|---|---|---|---|
-|  |  |  |  |
-
-## Secret exposure check
-
-- Result:
-
-## Auth/authorization check
-
-- Result:
-
-## Dependency/supply-chain check
-
-- Result:
-
-## Required human review
-
-- yes | no
-- reason:
-
-## Recommendation
-
-- 
-```
-
-## Do not
-
-- Do not approve changes that expose secrets.
-- Do not allow production config changes without explicit approval.
-- Do not mark high-risk changes as safe without evidence.
-- Do not run production-impacting commands.
+Return verdict, findings, tests run/not run and residual risk. Never grant new
+authority, approve a human review on their behalf or rewrite code as reviewer.

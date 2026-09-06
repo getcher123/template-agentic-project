@@ -1,7 +1,7 @@
 SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := help
 
-.PHONY: help setup-ci lint typecheck test test-fast format clean configure-required
+.PHONY: help setup-ci lint typecheck test test-fast format clean configure-required local-validate validate-docs validate-kit
 
 help:
 	@echo "Available commands:"
@@ -23,6 +23,15 @@ configure-required:
 setup-ci lint typecheck test test-fast format:
 	@$(MAKE) configure-required
 
+# Kit structure is not evidence that the consuming application's tests passed.
+validate-kit:
+	@python3 scripts/check-agent-kit.py
+
+validate-docs: validate-kit
+
+local-validate: lint typecheck
+	@test -n "$(TARGETED_TESTS)" || { echo "Name affected tests in TARGETED_TESTS" >&2; exit 2; }
+	@$(MAKE) test-fast TARGETED_TESTS="$(TARGETED_TESTS)"
+
 clean:
 	@echo "No project-specific clean command configured."
-
