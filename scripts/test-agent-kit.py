@@ -109,6 +109,10 @@ class AgentKitTest(unittest.TestCase):
                 result = run("python3", "scripts/validate-pr-body.py", "--body",
                              str(body), check=False)
                 self.assertNotEqual(result.returncode, 0, heading)
+            body.write_text(text.replace("- [x]", "- [ ]", 1))
+            result = run("python3", "scripts/validate-pr-body.py", "--body",
+                         str(body), check=False)
+            self.assertNotEqual(result.returncode, 0, "unchecked checklist")
 
     def test_start_creates_fresh_worktree_without_switching_dirty_main(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -191,6 +195,8 @@ class AgentKitTest(unittest.TestCase):
         self.assertIn('git -c credential.helper= push "$PUSH_URL"', finish)
         self.assertNotIn('git push -u origin', finish)
         self.assertIn('GH_TOKEN="$AGENT_GITHUB_TOKEN" gh pr create', finish)
+        self.assertIn('if [ -n "$MODE" ]', finish)
+        self.assertIn('--run-validation', finish)
 
         helper = ROOT / "scripts/github-askpass.sh"
         env = dict(
@@ -202,6 +208,128 @@ class AgentKitTest(unittest.TestCase):
         token = run(str(helper), "Password for github.com", env=env)
         self.assertEqual(actor.stdout.strip(), "explicit-worker")
         self.assertEqual(token.stdout.strip(), "synthetic-token")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repository = root / "project"
+            fake_bin = root / "bin"
+            make_log = root / "make-called"
+            fake_bin.mkdir()
+            run(str(INSTALLER), "--target", str(repository), "--mode", "new",
+                "--profile", "full", "--apply")
+            run("git", "init", "-b", "agent/test", cwd=repository)
+            run("git", "config", "user.email", "test@example.invalid", cwd=repository)
+            run("git", "config", "user.name", "Test", cwd=repository)
+            run("git", "remote", "add", "origin",
+                "https://github.com/acme/example.git", cwd=repository)
+            run("git", "add", ".", cwd=repository)
+            run("git", "commit", "-m", "initial", cwd=repository)
+            body = root / "body.md"
+            body_text = (repository / ".github/pull_request_template.md").read_text()
+            body_text = body_text.replace("Closes #", "Closes #7")
+            body_text = body_text.replace("\n-\n", "\n- Verified value.\n")
+            body_text = body_text.replace("- [ ]", "- [x]")
+            body.write_text(body_text)
+            fake_make = fake_bin / "make"
+            fake_make.write_text(
+                "#!/usr/bin/env bash\n"
+                "printf called > \"$MAKE_CALL_LOG\"\n"
+                "exit 88\n"
+            )
+            fake_make.chmod(0o700)
+            finish_env = dict(
+                os.environ,
+                PATH=str(fake_bin) + os.pathsep + os.environ["PATH"],
+                MAKE_CALL_LOG=str(make_log),
+            )
+            result = run(str(repository / "scripts/agent-finish.sh"), "7",
+                         "--body-file", str(body), cwd=repository,
+                         env=finish_env, check=False)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(make_log.exists())
+            result = run(str(repository / "scripts/agent-finish.sh"), "7",
+                         "--body-file", str(body), "--run-validation", "docs",
+                         cwd=repository, env=finish_env, check=False)
+            self.assertEqual(result.returncode, 88)
+            self.assertTrue(make_log.exists())
+
+    def test_label_setup_uses_the_same_explicit_github_context(self):
+        labels = (ROOT / "scripts/setup-github-labels.sh").read_text()
+        self.assertIn('scripts/check-github-context.sh', labels)
+        self.assertIn('GH_TOKEN="$AGENT_GITHUB_TOKEN" gh api', labels)
+        self.assertIn('repos/${AGENT_GITHUB_REPOSITORY}', labels)
+        self.assertNotIn('gh auth status', labels)
+        self.assertNotIn('repos/{owner}/{repo}', labels)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repository = root / "project"
+            fake_bin = root / "bin"
+            call_log = root / "gh-calls"
+            fake_bin.mkdir()
+            run(str(INSTALLER), "--target", str(repository), "--mode", "new",
+                "--profile", "full", "--apply")
+            run("git", "init", "-b", "main", cwd=repository)
+            run("git", "remote", "add", "origin",
+                "https://github.com/acme/example.git", cwd=repository)
+            fake_gh = fake_bin / "gh"
+            fake_gh.write_text(
+                "#!/usr/bin/env bash\n"
+                "[ \"${GH_TOKEN:-}\" = synthetic-token ] || exit 21\n"
+                "if [ \"$*\" = \"api user --jq .login\" ]; then\n"
+                "  printf 'worker\\n'\n"
+                "  exit 0\n"
+                "fi\n"
+                "printf '%s\\n' \"$*\" >> \"$GH_CALL_LOG\"\n"
+            )
+            fake_gh.chmod(0o700)
+            env = dict(
+                os.environ,
+                PATH=str(fake_bin) + os.pathsep + os.environ["PATH"],
+                GH_CALL_LOG=str(call_log),
+                AGENT_GITHUB_TOKEN="synthetic-token",
+                AGENT_GITHUB_ACTOR="worker",
+                AGENT_GITHUB_REPOSITORY="acme/example",
+            )
+            result = run(str(repository / "scripts/setup-github-labels.sh"),
+                         cwd=repository, env=env)
+            self.assertNotIn("synthetic-token", result.stdout + result.stderr)
+            calls = call_log.read_text().splitlines()
+            self.assertTrue(calls)
+            self.assertTrue(all("repos/acme/example/labels" in call for call in calls))
+
+    def test_sync_state_preserves_manual_notes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            umbrella = Path(tmp) / "umbrella"
+            repository = umbrella / "project"
+            repository.mkdir(parents=True)
+            run("git", "init", "-b", "main", cwd=repository)
+            state = umbrella / "STATE.md"
+            sync = ROOT / "scripts/sync-state.sh"
+            run(str(sync), cwd=repository)
+            first = state.read_text()
+            state.write_text(first.replace(
+                "<!-- BEGIN MANUAL NOTES -->\n",
+                "<!-- BEGIN MANUAL NOTES -->\n- Keep this manual decision.\n",
+            ))
+            run(str(sync), cwd=repository)
+            refreshed = state.read_text()
+            self.assertIn("- Keep this manual decision.", refreshed)
+            self.assertEqual(refreshed.count("<!-- BEGIN MANUAL NOTES -->"), 1)
+            self.assertEqual(refreshed.count("<!-- END MANUAL NOTES -->"), 1)
+            malformed = "# STATE.md\n<!-- BEGIN MANUAL NOTES -->\nkeep me\n"
+            state.write_text(malformed)
+            result = run(str(sync), cwd=repository, check=False)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(state.read_text(), malformed)
+            reversed_markers = (
+                "# STATE.md\n<!-- END MANUAL NOTES -->\nkeep me\n"
+                "<!-- BEGIN MANUAL NOTES -->\n"
+            )
+            state.write_text(reversed_markers)
+            result = run(str(sync), cwd=repository, check=False)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(state.read_text(), reversed_markers)
 
     def test_historical_and_russian_guides_cannot_override_current_contract(self):
         for path in (ROOT / "onboarding.md", ROOT / "APPENDIX-SKILLS-GUIDE.md"):

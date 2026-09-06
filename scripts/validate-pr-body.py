@@ -56,6 +56,21 @@ def validate(body, template):
     if not re.search(r"(?i)\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#\d+\b",
                      "\n".join(actual["Linked Issue"])):
         raise ValueError("Linked Issue requires a closing issue reference")
+    checkbox = re.compile(r"^\s*-\s+\[([ xX])\]\s+(.+?)\s*$")
+    required_items = [match[2] for line in canonical["Checklist"]
+                      if (match := checkbox.match(line))]
+    actual_items = {}
+    for line in actual["Checklist"]:
+        match = checkbox.match(line)
+        if not match:
+            continue
+        item = match[2]
+        if item in actual_items:
+            raise ValueError("Duplicate checklist item")
+        actual_items[item] = match[1].lower() == "x"
+    for item in required_items:
+        if not actual_items.get(item, False):
+            raise ValueError("Unchecked required checklist item")
 
 
 def main():

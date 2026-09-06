@@ -5,16 +5,15 @@
 After installing the `full` profile, run:
 
 ```bash
+export AGENT_GITHUB_TOKEN='<target-project token>'
+export AGENT_GITHUB_ACTOR='<expected login>'
+export AGENT_GITHUB_REPOSITORY='<owner/repository>'
 ./scripts/setup-github-labels.sh
 ```
 
-The script expects GitHub CLI authentication:
-
-```bash
-gh auth status
-```
-
-The helper uses `gh api`, so it works even when older GitHub CLI versions do not provide `gh label`.
+The helper verifies that the token, actor, origin remote and repository match,
+then passes the explicit token to every `gh api` call. The same three variables
+are used by the PR and GitHub MCP helpers for the current target project.
 
 ## Project Fields
 
